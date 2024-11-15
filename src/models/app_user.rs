@@ -25,7 +25,7 @@ pub struct AppUser {
 }
 
 #[derive(Insertable, Serialize, Deserialize)]
-#[table_name = "app_user"]
+#[diesel(table_name = app_user)]
 pub struct NewAppUser {
     pub first_name: String,
     pub last_name: String,
@@ -36,7 +36,7 @@ pub struct NewAppUser {
 
 // Struct to allow send app user data for future login
 #[derive(Insertable, Serialize, Deserialize)]
-#[table_name = "app_user"]
+#[diesel(table_name = app_user)]
 pub struct LoginAppUser {
     pub username: String,
     pub password: String
@@ -52,7 +52,7 @@ pub struct AppUserToken {
 impl AppUser {
 
     pub fn register(
-        connection: &SqlConnection,
+        connection: &mut SqlConnection,
         mut new_user: NewAppUser
     ) -> Result<usize, ServerError> {
         use data_encoding::BASE64;
@@ -64,7 +64,7 @@ impl AppUser {
     }
 
     pub fn login(
-        connection: &SqlConnection,
+        connection: &mut SqlConnection,
         login_app_user: LoginAppUser
     ) -> Result<AppUserToken, ServerError> {
         use data_encoding::BASE64;
@@ -77,7 +77,7 @@ impl AppUser {
         logged_app_user.and_then(Claims::create_token)
     }
 
-    pub fn get_app_user_data(connection: &SqlConnection, app_user_id: i16) -> Result<AppUser, ServerError> {
+    pub fn get_app_user_data(connection: &mut SqlConnection, app_user_id: i16) -> Result<AppUser, ServerError> {
         app_user
             .filter(id.eq(app_user_id))
             .get_result(connection)

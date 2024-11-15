@@ -20,7 +20,7 @@ pub async fn register(
     app_user: web::Json<NewAppUser>
 ) -> ServerResponse {
     let connection = pool_handler(Some(&pool));
-    AppUser::register(&connection.unwrap(), app_user.into_inner()).map(|_| {
+    AppUser::register(&mut connection.unwrap(), app_user.into_inner()).map(|_| {
         HttpResponse::Created().finish()
     })
 }
@@ -32,7 +32,7 @@ pub async fn login(
     login_app_user: web::Json<LoginAppUser>
 ) -> ServerResponse {
     let connection = pool_handler(Some(&pool));
-    AppUser::login(&connection.unwrap(), login_app_user.into_inner()).map(|token| {
+    AppUser::login(&mut connection.unwrap(), login_app_user.into_inner()).map(|token| {
         HttpResponse::Ok().json(token)
     })
 }

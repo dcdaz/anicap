@@ -88,9 +88,11 @@ impl ServerConfig {
     fn get_configuration(file_path: &str) -> Result<Self, ConfigError> {
         use config::{Config, File};
 
-        let mut config = Config::new();
-        match config.merge(File::with_name(file_path)) {
-            Ok(_) => config.try_into(),
+        let config = Config::builder()
+            .add_source(File::with_name(file_path))
+            .build();
+        match config {
+            Ok(_) => config.unwrap().try_deserialize(),
             Err(_error) => {
                 println!("\n- Default config will be used due to:\n\t{}\n", _error);
                 Ok(Self::default())

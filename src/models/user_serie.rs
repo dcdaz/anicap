@@ -24,7 +24,7 @@ pub struct UserSerie {
 
 #[derive(Insertable, Serialize, Deserialize)]
 #[serde(default)]
-#[table_name = "user_serie"]
+#[diesel(table_name = user_serie)]
 pub struct NewUserSerie {
     pub user_id: i16,
     pub name: String,
@@ -48,7 +48,7 @@ impl Default for NewUserSerie {
 impl UserSerie {
 
     pub fn add_new_serie(
-        connection: &SqlConnection,
+        connection: &mut SqlConnection,
         new_user_serie: NewUserSerie
     ) -> Result<usize, ServerError> {
         insert_into(user_serie)
@@ -58,7 +58,7 @@ impl UserSerie {
     }
 
     pub fn get_series(
-        connection: &SqlConnection,
+        connection: &mut SqlConnection,
         logged_user_id: i16
     ) -> Result<Vec<UserSerie>, ServerError> {
         user_serie
@@ -76,7 +76,7 @@ impl UserSerie {
     }
 
     pub fn update_serie(
-        connection: &SqlConnection,
+        connection: &mut SqlConnection,
         serie_id: i16,
         updated_user_serie: NewUserSerie
     ) -> Result<usize, ServerError> {

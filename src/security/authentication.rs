@@ -1,6 +1,6 @@
 use actix_web::{
     error::ErrorUnauthorized,
-    http::HeaderValue,
+    http::header::HeaderValue,
     web,
     dev,
     Error,
@@ -18,7 +18,6 @@ use crate::models::token::Claims;
 
 pub struct AuthenticatedRequest {
     pub user_id: i16,
-    pub string_token: String,
     pub connection: SqlPooledConnection
 }
 
@@ -26,7 +25,6 @@ impl FromRequest for AuthenticatedRequest {
 
     type Error = Error;
     type Future = Ready<Result<AuthenticatedRequest, Error>>;
-    type Config = ();
 
     fn from_request(http_request: &HttpRequest, _payload: &mut dev::Payload) -> Self::Future {
         let auth = http_request.headers().get("Authorization");
@@ -42,7 +40,6 @@ impl FromRequest for AuthenticatedRequest {
                             ok(
                                 AuthenticatedRequest {
                                     user_id: decoded_token.unwrap().claims.id,
-                                    string_token: token.to_owned(),
                                     connection: connection.unwrap()
                                 }
                             )

@@ -1,17 +1,18 @@
 use serde::Serialize;
 use actix_web::{HttpResponse, error::ResponseError};
+use thiserror::Error;
 
-#[derive(Debug, Fail, Serialize)]
+#[derive(Debug, Error, Serialize)]
 pub enum ServerError {
-    #[fail(display="{} Bad Request", _0)]
+    #[error("{0} Bad Request")]
     InsertFailure(String),
-    #[fail(display="{} Not found", _0)]
+    #[error("{0} Not found")]
     ObjectNotFound(String),
-    #[fail(display="{} Error Retrieving from DB", _0)]
+    #[error("{0} Error Retrieving from DB")]
     ErrorRetrievingData(String),
-    #[fail(display="{} TokenCreationError", _0)]
+    #[error("{0} TokenCreationError")]
     TokenCreationError(String),
-    #[fail(display="{} BadQueryParameters", _0)]
+    #[error("{0} BadQueryParameters")]
     BadQueryParameters(String),
 }
 
