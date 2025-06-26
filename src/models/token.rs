@@ -1,15 +1,8 @@
-use serde::{Deserialize, Serialize};
 use chrono::Duration;
 use jsonwebtoken::{
-    encode,
-    decode,
-    Header,
-    Algorithm,
-    EncodingKey,
-    DecodingKey,
-    Validation,
-    TokenData
+    decode, encode, Algorithm, DecodingKey, EncodingKey, Header, TokenData, Validation,
 };
+use serde::{Deserialize, Serialize};
 
 use super::app_user::{AppUser, AppUserToken};
 use crate::utils::error_mapper::ServerError;
@@ -18,24 +11,22 @@ use crate::utils::error_mapper::ServerError;
 pub struct Claims {
     pub id: i16,
     username: String,
-    exp: i64
+    exp: i64,
 }
 
-
 impl Claims {
-
     pub fn create_token(app_user: AppUser) -> Result<AppUserToken, ServerError> {
         let claims = Self::with_app_user(&app_user);
         let token = encode(
             &Header::default(),
             &claims,
-            &EncodingKey::from_secret(Self::get_jwt_secret_key().as_bytes())
+            &EncodingKey::from_secret(Self::get_jwt_secret_key().as_bytes()),
         )
-        .map_err(|error| { ServerError::TokenCreationError(error.to_string()) });
+        .map_err(|error| ServerError::TokenCreationError(error.to_string()));
 
         Ok(AppUserToken {
             token_type: "Bearer".into(),
-            access_token: token.unwrap()
+            access_token: token.unwrap(),
         })
     }
 
@@ -43,7 +34,7 @@ impl Claims {
         decode::<Claims>(
             token,
             &DecodingKey::from_secret(Self::get_jwt_secret_key().as_bytes()),
-            &Validation::new(Algorithm::HS256)
+            &Validation::new(Algorithm::HS256),
         )
     }
 
@@ -57,16 +48,21 @@ impl Claims {
 
     fn with_app_user(app_user: &AppUser) -> Self {
         use chrono::Local;
-        let token_duration = crate::configuration::server_config::SERVER_CONFIG.token.duration;
+        let token_duration = crate::configuration::server_config::SERVER_CONFIG
+            .token
+            .duration;
 
         Claims {
             id: app_user.id,
             username: app_user.username.to_owned(),
-            exp: (Local::now() + Duration::minutes(token_duration.into())).timestamp()
+            exp: (Local::now() + Duration::minutes(token_duration.into())).timestamp(),
         }
     }
 
     fn get_jwt_secret_key() -> String {
-        crate::configuration::server_config::SERVER_CONFIG.clone().token.jwt_secret
+        crate::configuration::server_config::SERVER_CONFIG
+            .clone()
+            .token
+            .jwt_secret
     }
 }

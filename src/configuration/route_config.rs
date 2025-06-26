@@ -1,5 +1,5 @@
-use actix_web::web;
 use actix_cors::Cors;
+use actix_web::web;
 
 pub fn get_cors() -> Cors {
     Cors::permissive().max_age(3600)
@@ -8,15 +8,8 @@ pub fn get_cors() -> Cors {
 // Endpoints registration config
 pub fn routes(config: &mut web::ServiceConfig) {
     use crate::controller::{
-        app_user_controller::{
-            register,
-            login
-        },
-        user_serie_controller::{
-            insert_serie,
-            get_series,
-            update_serie
-        }
+        app_user_controller::{login, register},
+        serie_controller::{get_serie_by_id, get_series, insert_serie, update_serie},
     };
 
     config
@@ -24,5 +17,6 @@ pub fn routes(config: &mut web::ServiceConfig) {
         .service(login)
         .service(insert_serie)
         .service(get_series)
+        .service(get_serie_by_id)
         .service(update_serie);
 }

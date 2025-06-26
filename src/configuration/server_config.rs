@@ -1,5 +1,5 @@
-use serde::Deserialize;
 use config::ConfigError;
+use serde::Deserialize;
 
 const CONFIG_FILE_NAME: &str = "anicap.yml";
 
@@ -8,7 +8,6 @@ const CONFIG_FILE_NAME: &str = "anicap.yml";
 lazy_static! {
     pub static ref SERVER_CONFIG: ServerConfig = ServerConfig::new();
 }
-
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct ServerDataBaseConfig {
@@ -20,23 +19,22 @@ impl Default for ServerDataBaseConfig {
     fn default() -> Self {
         ServerDataBaseConfig {
             db_url: String::from("mysql://user:pass@ip:port/db_name"),
-            pool_size: 6
+            pool_size: 6,
         }
     }
-
 }
 
 #[derive(Deserialize, Debug, Clone)]
 pub struct ServerTokenConfig {
     pub jwt_secret: String,
-    pub duration: u16
+    pub duration: u16,
 }
 
 impl Default for ServerTokenConfig {
     fn default() -> Self {
         ServerTokenConfig {
             jwt_secret: String::from("anicap-super-secret-key"),
-            duration: 60
+            duration: 60,
         }
     }
 }
@@ -47,7 +45,7 @@ pub struct ServerConfig {
     pub server_port: u16,
     pub log_type: String,
     pub database: ServerDataBaseConfig,
-    pub token: ServerTokenConfig
+    pub token: ServerTokenConfig,
 }
 
 impl Default for ServerConfig {
@@ -57,13 +55,12 @@ impl Default for ServerConfig {
             server_port: 8085,
             log_type: String::from("actix_web=DEBUG"),
             database: ServerDataBaseConfig::default(),
-            token: ServerTokenConfig::default()
+            token: ServerTokenConfig::default(),
         }
     }
 }
 
 impl ServerConfig {
-
     // New instance of ServerConfig
     // gets current filepath with YML config file in it
     // then tries to get configuration
@@ -110,7 +107,7 @@ mod settings_test {
     fn get_default_db_config() {
         let expected = ServerDataBaseConfig {
             db_url: String::from("./anicap.db"),
-            pool_size: 6
+            pool_size: 6,
         };
 
         let actual = ServerConfig::new();
@@ -122,7 +119,7 @@ mod settings_test {
     fn get_default_token_config() {
         let expected = ServerTokenConfig {
             jwt_secret: String::from("anicap-super-secret-key"),
-            duration: 60
+            duration: 60,
         };
 
         let actual = ServerConfig::new();
@@ -137,7 +134,7 @@ mod settings_test {
             server_port: 8085,
             log_type: String::from("actix_web=DEBUG"),
             database: ServerDataBaseConfig::default(),
-            token: ServerTokenConfig::default()
+            token: ServerTokenConfig::default(),
         };
 
         let actual = ServerConfig::new();

@@ -1,14 +1,7 @@
-use actix_web::{
-    web,
-    HttpResponse
-};
+use actix_web::{web, HttpResponse};
 
+use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
 use diesel::sqlite::SqliteConnection;
-use diesel::r2d2::{
-    ConnectionManager,
-    Pool,
-    PooledConnection
-};
 
 // DB Types.
 // If some user wants to change MySQL with PostgresSQL or SQLite
@@ -18,7 +11,9 @@ pub type SqlPool = Pool<ConnectionManager<SqlConnection>>;
 pub type SqlPooledConnection = PooledConnection<ConnectionManager<SqlConnection>>;
 
 pub fn connect_database() -> SqlPool {
-    let db_config = crate::configuration::server_config::SERVER_CONFIG.clone().database;
+    let db_config = crate::configuration::server_config::SERVER_CONFIG
+        .clone()
+        .database;
     let manager = ConnectionManager::<SqlConnection>::new(db_config.db_url);
     Pool::builder()
         .max_size(db_config.pool_size)
@@ -27,11 +22,14 @@ pub fn connect_database() -> SqlPool {
 }
 
 pub fn pool_handler(
-    connection_pool: Option<&web::Data<SqlPool>>
+    connection_pool: Option<&web::Data<SqlPool>>,
 ) -> Result<SqlPooledConnection, HttpResponse> {
     connection_pool
-        .ok_or(HttpResponse::InternalServerError().json("No Data Base connection exists!".to_owned()))
+        .ok_or(
+            HttpResponse::InternalServerError().json("No Data Base connection exists!".to_owned()),
+        )
         .and_then(|pool| {
-             pool.get().map_err(|error| HttpResponse::InternalServerError().json(error.to_string()))
+            pool.get()
+                .map_err(|error| HttpResponse::InternalServerError().json(error.to_string()))
         })
 }

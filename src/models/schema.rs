@@ -15,7 +15,7 @@ table! {
 }
 
 table! {
-    user_serie (id) {
+    serie (id) {
         id -> SmallInt,
         user_id -> SmallInt,
         name -> Varchar,
@@ -24,3 +24,5 @@ table! {
         score -> Float,
     }
 }
+
+joinable!(serie -> app_user(user_id));
