@@ -17,7 +17,6 @@ pub async fn insert_serie(
     .map(|_| HttpResponse::Created().finish())
 }
 
-
 #[utoipa::path(
     get,
     path = "/serie",

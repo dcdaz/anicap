@@ -6,7 +6,7 @@ use validator::Validate;
 
 use crate::schema::app_user;
 use crate::schema::app_user::dsl::*;
-use crate::utils::{SqlConnection, ServerError};
+use crate::utils::{ServerError, SqlConnection};
 
 #[derive(Queryable, Serialize, Deserialize)]
 pub struct AppUser {

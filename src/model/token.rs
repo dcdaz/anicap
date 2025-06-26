@@ -48,9 +48,7 @@ impl Claims {
 
     fn with_app_user(app_user: &AppUser) -> Self {
         use chrono::Local;
-        let token_duration = crate::configuration::SERVER_CONFIG
-            .token
-            .duration;
+        let token_duration = crate::configuration::SERVER_CONFIG.token.duration;
 
         Claims {
             id: app_user.id,
@@ -60,9 +58,6 @@ impl Claims {
     }
 
     fn get_jwt_secret_key() -> String {
-        crate::configuration::SERVER_CONFIG
-            .clone()
-            .token
-            .jwt_secret
+        crate::configuration::SERVER_CONFIG.clone().token.jwt_secret
     }
 }

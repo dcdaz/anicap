@@ -6,7 +6,7 @@ use validator::Validate;
 
 use crate::schema::serie;
 use crate::schema::serie::dsl::*;
-use crate::utils::{SqlConnection, ServerError};
+use crate::utils::{ServerError, SqlConnection};
 use utoipa::ToSchema;
 
 #[derive(Queryable, Serialize, Deserialize, ToSchema)]
