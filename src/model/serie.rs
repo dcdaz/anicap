@@ -1,15 +1,15 @@
-use crate::utils::database_utils::SqlConnection;
 use diesel::{
     insert_into, update, BoolExpressionMethods, ExpressionMethods, QueryDsl, RunQueryDsl,
 };
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
-use super::schema::serie;
-use super::schema::serie::dsl::*;
-use crate::utils::error_mapper::ServerError;
+use crate::schema::serie;
+use crate::schema::serie::dsl::*;
+use crate::utils::{SqlConnection, ServerError};
+use utoipa::ToSchema;
 
-#[derive(Queryable, Serialize, Deserialize)]
+#[derive(Queryable, Serialize, Deserialize, ToSchema)]
 pub struct Serie {
     pub id: i16,
     pub user_id: i16,

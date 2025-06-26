@@ -1,6 +1,6 @@
-use super::controller_types::ServerResponse;
-use crate::models::app_user::{AppUser, LoginAppUser, NewAppUser};
-use crate::utils::database_utils::{pool_handler, SqlPool};
+use super::handler_types::ServerResponse;
+use crate::model::{AppUser, LoginAppUser, NewAppUser};
+use crate::utils::{pool_handler, SqlPool};
 use actix_web::{post, web, HttpResponse};
 
 #[post("/register")]

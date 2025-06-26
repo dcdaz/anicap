@@ -11,7 +11,7 @@ pub type SqlPool = Pool<ConnectionManager<SqlConnection>>;
 pub type SqlPooledConnection = PooledConnection<ConnectionManager<SqlConnection>>;
 
 pub fn connect_database() -> SqlPool {
-    let db_config = crate::configuration::server_config::SERVER_CONFIG
+    let db_config = crate::configuration::SERVER_CONFIG
         .clone()
         .database;
     let manager = ConnectionManager::<SqlConnection>::new(db_config.db_url);

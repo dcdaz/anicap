@@ -3,8 +3,8 @@ use actix_web::{
 };
 use futures::future::{err, ok, Ready};
 
-use crate::models::token::Claims;
-use crate::utils::database_utils::{pool_handler, SqlPool, SqlPooledConnection};
+use crate::model::Claims;
+use crate::utils::{pool_handler, SqlPool, SqlPooledConnection};
 
 pub struct AuthenticatedRequest {
     pub user_id: i16,

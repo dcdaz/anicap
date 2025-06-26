@@ -5,7 +5,7 @@ use jsonwebtoken::{
 use serde::{Deserialize, Serialize};
 
 use super::app_user::{AppUser, AppUserToken};
-use crate::utils::error_mapper::ServerError;
+use crate::utils::ServerError;
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
@@ -48,7 +48,7 @@ impl Claims {
 
     fn with_app_user(app_user: &AppUser) -> Self {
         use chrono::Local;
-        let token_duration = crate::configuration::server_config::SERVER_CONFIG
+        let token_duration = crate::configuration::SERVER_CONFIG
             .token
             .duration;
 
@@ -60,7 +60,7 @@ impl Claims {
     }
 
     fn get_jwt_secret_key() -> String {
-        crate::configuration::server_config::SERVER_CONFIG
+        crate::configuration::SERVER_CONFIG
             .clone()
             .token
             .jwt_secret

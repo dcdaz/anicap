@@ -1,8 +1,8 @@
 use actix_web::{get, post, put, web, HttpResponse};
 
-use super::controller_types::ServerResponse;
-use crate::models::serie::{NewSerie, Serie};
-use crate::security::authentication::AuthenticatedRequest;
+use super::handler_types::ServerResponse;
+use crate::model::{NewSerie, Serie};
+use crate::security::AuthenticatedRequest;
 
 #[post("/serie")]
 pub async fn insert_serie(
@@ -17,6 +17,15 @@ pub async fn insert_serie(
     .map(|_| HttpResponse::Created().finish())
 }
 
+
+#[utoipa::path(
+    get,
+    path = "/serie",
+    tag = "Get all series",
+    responses(
+        (status = 200, description= "Authenticated User", body = Serie),
+    )
+)]
 #[get("/serie")]
 pub async fn get_series(mut authenticated_request: AuthenticatedRequest) -> ServerResponse {
     Serie::get_series(

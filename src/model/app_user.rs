@@ -4,10 +4,9 @@ use diesel::{insert_into, ExpressionMethods, QueryDsl, RunQueryDsl};
 use serde::{Deserialize, Serialize};
 use validator::Validate;
 
-use super::schema::app_user;
-use super::schema::app_user::dsl::*;
-use crate::utils::database_utils::SqlConnection;
-use crate::utils::error_mapper::ServerError;
+use crate::schema::app_user;
+use crate::schema::app_user::dsl::*;
+use crate::utils::{SqlConnection, ServerError};
 
 #[derive(Queryable, Serialize, Deserialize)]
 pub struct AppUser {
