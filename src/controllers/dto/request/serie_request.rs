@@ -1,8 +1,9 @@
 use crate::utils::ServerError;
 use serde::Deserialize;
 use validator::Validate;
+use utoipa::ToSchema;
 
-#[derive(Validate, Deserialize)]
+#[derive(Validate, Deserialize, ToSchema)]
 #[serde(default)]
 pub struct SerieRequest {
     #[validate(length(min = 1, max = 255, code = "too_long", message = "Name is too long"))]

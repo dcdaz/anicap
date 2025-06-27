@@ -1,3 +1,4 @@
+use super::openapi_config::ApiDoc;
 use actix_cors::Cors;
 use actix_web::web;
 use utoipa::OpenApi;
@@ -5,11 +6,6 @@ use utoipa::OpenApi;
 pub fn get_cors() -> Cors {
     Cors::permissive().max_age(3600)
 }
-
-#[derive(OpenApi)]
-#[openapi(paths(crate::controllers::get_all_series))]
-struct ApiDoc;
-
 // Endpoints registration config
 pub fn routes(config: &mut web::ServiceConfig) {
     use crate::controllers::{

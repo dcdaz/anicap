@@ -1,3 +1,4 @@
+mod openapi_config;
 mod route_config;
 mod server_config;
 

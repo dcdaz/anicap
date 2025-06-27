@@ -1,8 +1,9 @@
 use crate::utils::ServerError;
 use serde::Deserialize;
+use utoipa::ToSchema;
 use validator::Validate;
 
-#[derive(Validate, Deserialize)]
+#[derive(Validate, Deserialize, ToSchema)]
 pub struct AppUserRequest {
     #[validate(length(min = 1, max = 100, code = "too_long", message = "First Name is too long"))]
     pub first_name: String,
@@ -26,7 +27,7 @@ impl AppUserRequest {
     }
 }
 
-#[derive(Validate, Deserialize)]
+#[derive(Validate, Deserialize, ToSchema)]
 pub struct LoginAppUserRequest {
     #[validate(length(min = 1, max = 100, code = "too_long", message = "First Name is too long"))]
     pub username: String,

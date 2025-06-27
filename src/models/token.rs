@@ -43,7 +43,10 @@ impl Claims {
     }
 
     pub fn is_valid_token(token: &str) -> bool {
-        let decoded_token = Self::decode_token(token).unwrap().claims;
+        let decoded_token = match Self::decode_token(token) {
+            Ok(decoded) => decoded.claims,
+            Err(_) => return false
+        };
         if decoded_token.exp > chrono::Local::now().timestamp() {
             return true;
         }
