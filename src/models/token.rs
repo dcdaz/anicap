@@ -4,8 +4,8 @@ use jsonwebtoken::{
 };
 use serde::{Deserialize, Serialize};
 
-use super::app_user::{AppUser, AppUserToken};
-use crate::utils::error_mapper::ServerError;
+use super::app_user::AppUser;
+use crate::{controllers::AppUserTokenResponse, utils::ServerError};
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
@@ -15,7 +15,7 @@ pub struct Claims {
 }
 
 impl Claims {
-    pub fn create_token(app_user: AppUser) -> Result<AppUserToken, ServerError> {
+    pub fn create_token(app_user: AppUser) -> Result<AppUserTokenResponse, ServerError> {
         let claims = Self::with_app_user(&app_user);
         let token = encode(
             &Header::default(),
@@ -24,22 +24,29 @@ impl Claims {
         )
         .map_err(|error| ServerError::TokenCreationError(error.to_string()));
 
-        Ok(AppUserToken {
+        Ok(AppUserTokenResponse {
             token_type: "Bearer".into(),
             access_token: token.unwrap(),
         })
     }
 
-    pub fn decode_token(token: &str) -> Result<TokenData<Claims>, jsonwebtoken::errors::Error> {
-        decode::<Claims>(
+    pub fn decode_token(token: &str) -> Result<TokenData<Claims>, ServerError> {
+        let decoded_token: Result<TokenData<Claims>, jsonwebtoken::errors::Error> = decode::<Claims>(
             token,
             &DecodingKey::from_secret(Self::get_jwt_secret_key().as_bytes()),
             &Validation::new(Algorithm::HS256),
-        )
+        );
+        match decoded_token {
+            Ok(_) => Ok(decoded_token.unwrap()),
+            Err(e) => Err(ServerError::TokenExpiredError(e.to_string())),
+        }
     }
 
     pub fn is_valid_token(token: &str) -> bool {
-        let decoded_token = Self::decode_token(token).unwrap().claims;
+        let decoded_token = match Self::decode_token(token) {
+            Ok(decoded) => decoded.claims,
+            Err(_) => return false
+        };
         if decoded_token.exp > chrono::Local::now().timestamp() {
             return true;
         }
@@ -48,9 +55,7 @@ impl Claims {
 
     fn with_app_user(app_user: &AppUser) -> Self {
         use chrono::Local;
-        let token_duration = crate::configuration::server_config::SERVER_CONFIG
-            .token
-            .duration;
+        let token_duration = crate::configuration::SERVER_CONFIG.token.duration;
 
         Claims {
             id: app_user.id,
@@ -60,9 +65,6 @@ impl Claims {
     }
 
     fn get_jwt_secret_key() -> String {
-        crate::configuration::server_config::SERVER_CONFIG
-            .clone()
-            .token
-            .jwt_secret
+        crate::configuration::SERVER_CONFIG.clone().token.jwt_secret
     }
 }

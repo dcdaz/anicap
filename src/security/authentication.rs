@@ -3,8 +3,8 @@ use actix_web::{
 };
 use futures::future::{err, ok, Ready};
 
-use crate::models::token::Claims;
-use crate::utils::database_utils::{pool_handler, SqlPool, SqlPooledConnection};
+use crate::models::Claims;
+use crate::utils::{pool_handler, SqlPool, SqlPooledConnection};
 
 pub struct AuthenticatedRequest {
     pub user_id: i16,
@@ -24,13 +24,10 @@ impl FromRequest for AuthenticatedRequest {
                 let connection = pool_handler(pool_from_app_data);
                 if Claims::is_valid_token(token) {
                     let decoded_token = Claims::decode_token(token);
-                    match decoded_token {
-                        Ok(_) => ok(AuthenticatedRequest {
-                            user_id: decoded_token.unwrap().claims.id,
-                            connection: connection.unwrap(),
-                        }),
-                        Err(_) => err(ErrorUnauthorized("Invalid or Expired token")),
-                    }
+                    ok(AuthenticatedRequest {
+                        user_id: decoded_token.unwrap().claims.id,
+                        connection: connection.unwrap(),
+                    })
                 } else {
                     err(ErrorUnauthorized("Expired token"))
                 }

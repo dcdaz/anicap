@@ -2,6 +2,8 @@ use actix_web::{error::ResponseError, HttpResponse};
 use serde::Serialize;
 use thiserror::Error;
 
+use crate::controllers::ErrorMessage;
+
 #[derive(Debug, Error, Serialize)]
 pub enum ServerError {
     #[error("{0} Bad Request")]
@@ -12,21 +14,8 @@ pub enum ServerError {
     ObjectNotFound(String),
     #[error("{0} Token Creation Error")]
     TokenCreationError(String),
-}
-
-#[derive(Serialize)]
-struct ErrorMessage {
-    cause: String,
-    message: String,
-}
-
-impl ErrorMessage {
-    fn new(cause: &str, message: &str) -> Self {
-        ErrorMessage {
-            cause: cause.to_string(),
-            message: message.to_string(),
-        }
-    }
+    #[error("{0} Token Expired Error")]
+    TokenExpiredError(String),
 }
 
 impl ResponseError for ServerError {
@@ -40,6 +29,9 @@ impl ResponseError for ServerError {
                 .json(ErrorMessage::new("Object Not Found", message)),
             ServerError::TokenCreationError(ref message) => HttpResponse::InternalServerError()
                 .json(ErrorMessage::new("Token Creation Error", message)),
+            ServerError::TokenExpiredError(ref message) => {
+                HttpResponse::Unauthorized().json(ErrorMessage::new("Token Expired Error", message))
+            }
         }
     }
 }
