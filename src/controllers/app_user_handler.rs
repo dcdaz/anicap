@@ -1,21 +1,25 @@
 use super::handler_types::ServerResponse;
-use crate::model::{AppUser, LoginAppUser, NewAppUser};
+use crate::controllers::{AppUserRequest, LoginAppUserRequest};
+use crate::services::app_user_service;
 use crate::utils::{pool_handler, SqlPool};
 use actix_web::{post, web, HttpResponse};
 
 #[post("/register")]
-pub async fn register(pool: web::Data<SqlPool>, app_user: web::Json<NewAppUser>) -> ServerResponse {
+pub async fn register(
+    pool: web::Data<SqlPool>,
+    request: web::Json<AppUserRequest>,
+) -> ServerResponse {
     let connection = pool_handler(Some(&pool));
-    AppUser::register(&mut connection.unwrap(), app_user.into_inner())
+    app_user_service::register(&mut connection.unwrap(), request.into_inner())
         .map(|_| HttpResponse::Created().finish())
 }
 
 #[post("login")]
 pub async fn login(
     pool: web::Data<SqlPool>,
-    login_app_user: web::Json<LoginAppUser>,
+    request: web::Json<LoginAppUserRequest>,
 ) -> ServerResponse {
     let connection = pool_handler(Some(&pool));
-    AppUser::login(&mut connection.unwrap(), login_app_user.into_inner())
+    app_user_service::login(&mut connection.unwrap(), request.into_inner())
         .map(|token| HttpResponse::Ok().json(token))
 }

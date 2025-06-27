@@ -4,8 +4,8 @@ use jsonwebtoken::{
 };
 use serde::{Deserialize, Serialize};
 
-use super::app_user::{AppUser, AppUserToken};
-use crate::utils::ServerError;
+use super::app_user::AppUser;
+use crate::{controllers::AppUserTokenResponse, utils::ServerError};
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
@@ -15,7 +15,7 @@ pub struct Claims {
 }
 
 impl Claims {
-    pub fn create_token(app_user: AppUser) -> Result<AppUserToken, ServerError> {
+    pub fn create_token(app_user: AppUser) -> Result<AppUserTokenResponse, ServerError> {
         let claims = Self::with_app_user(&app_user);
         let token = encode(
             &Header::default(),
@@ -24,18 +24,22 @@ impl Claims {
         )
         .map_err(|error| ServerError::TokenCreationError(error.to_string()));
 
-        Ok(AppUserToken {
+        Ok(AppUserTokenResponse {
             token_type: "Bearer".into(),
             access_token: token.unwrap(),
         })
     }
 
-    pub fn decode_token(token: &str) -> Result<TokenData<Claims>, jsonwebtoken::errors::Error> {
-        decode::<Claims>(
+    pub fn decode_token(token: &str) -> Result<TokenData<Claims>, ServerError> {
+        let decoded_token: Result<TokenData<Claims>, jsonwebtoken::errors::Error> = decode::<Claims>(
             token,
             &DecodingKey::from_secret(Self::get_jwt_secret_key().as_bytes()),
             &Validation::new(Algorithm::HS256),
-        )
+        );
+        match decoded_token {
+            Ok(_) => Ok(decoded_token.unwrap()),
+            Err(e) => Err(ServerError::TokenExpiredError(e.to_string())),
+        }
     }
 
     pub fn is_valid_token(token: &str) -> bool {

@@ -12,6 +12,8 @@ pub enum ServerError {
     ObjectNotFound(String),
     #[error("{0} Token Creation Error")]
     TokenCreationError(String),
+    #[error("{0} Token Expired Error")]
+    TokenExpiredError(String),
 }
 
 #[derive(Serialize)]
@@ -40,6 +42,9 @@ impl ResponseError for ServerError {
                 .json(ErrorMessage::new("Object Not Found", message)),
             ServerError::TokenCreationError(ref message) => HttpResponse::InternalServerError()
                 .json(ErrorMessage::new("Token Creation Error", message)),
+            ServerError::TokenExpiredError(ref message) => {
+                HttpResponse::Unauthorized().json(ErrorMessage::new("Token Expired Error", message))
+            }
         }
     }
 }

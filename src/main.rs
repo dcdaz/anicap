@@ -6,10 +6,12 @@ extern crate diesel;
 extern crate lazy_static;
 
 mod configuration;
-mod handler;
-mod model;
+mod controllers;
+mod models;
+mod repositories;
 mod schema;
 mod security;
+mod services;
 mod utils;
 
 use configuration::{get_cors, routes};
