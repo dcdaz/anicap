@@ -63,12 +63,14 @@ cargo build
 
 This has a sample of the current endpoints and how they work
 
+### AppUser
+
 #### register
 
 Request
 
 ```
-path: /register
+path: /appuser/register
 method: POST
 ```
 
@@ -89,7 +91,7 @@ Body
 Request
 
 ```
-path: /login
+path: /appuser/login
 method: POST
 ```
 Body
@@ -101,6 +103,18 @@ Body
 }
 ```
 
+#### logout
+
+Request
+
+```
+path: /appuser/logout
+method: GET
+security: cookie token
+```
+
+### Serie
+
 #### add_serie
 
 Request
@@ -108,6 +122,7 @@ Request
 ```
 path: /serie
 method: POST
+security: cookie token
 ```
 
 Body
@@ -121,14 +136,14 @@ Body
 }
 ```
 
-#### get_series
+#### search_series
 
 Request
 
 ```
 path: /serie
 method: GET
-headers: Bearer token
+security: cookie token
 ```
 
 Response
@@ -146,6 +161,29 @@ Response
 ]
 ```
 
+#### get_serie_by_id
+
+Request
+
+```
+path: /serie/{serie_id}
+method: GET
+security: cookie token
+```
+
+Response
+
+```json
+{
+  "id": 1,
+  "user_id": 1,
+  "name": "The Outpost",
+  "season": 2,
+  "chapter": 0,
+  "score": 8.0
+}
+```
+
 #### update_serie
 
 Request
@@ -153,7 +191,7 @@ Request
 ```
 path: /serie/{serie_id}
 method: PUT
-headers: Bearer token
+security: cookie token
 ```
 
 Body

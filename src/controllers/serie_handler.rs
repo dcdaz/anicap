@@ -36,16 +36,16 @@ pub async fn insert_serie(
     get,
     path = "/serie",
     tag = "Series",
-    description = "Get all series",
+    description = "Search series",
     security(("token" = [])),
     responses(
-        (status = 200, description= "Get all series", body = Vec<SerieResponse>),
-        (status = 401, description= "Unauthorized", body = ErrorMessage),
+        (status = 200, body = Vec<SerieResponse>),
+        (status = 401, body = ErrorMessage),
     )
 )]
 #[get("/serie")]
-pub async fn get_all_series(authenticated_request: AuthenticatedRequest) -> ServerResponse {
-    serie_service::get_all_series(authenticated_request)
+pub async fn search_series(authenticated_request: AuthenticatedRequest) -> ServerResponse {
+    serie_service::search_series(authenticated_request)
         .map(|series| HttpResponse::Ok().json(series))
 }
 
