@@ -16,7 +16,7 @@ pub fn add_new_serie(
         .map_err(|error| ServerError::InsertFailure(error.to_string()))
 }
 
-pub fn get_all_series(
+pub fn search_series(
     connection: &mut SqlConnection,
     logged_user_id: i16,
 ) -> Result<Vec<Serie>, ServerError> {

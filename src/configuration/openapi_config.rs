@@ -8,8 +8,9 @@ use utoipa::{
     paths(
         crate::controllers::register,
         crate::controllers::login,
+        crate::controllers::logout,
         crate::controllers::insert_serie,
-        crate::controllers::get_all_series,
+        crate::controllers::search_series,
         crate::controllers::get_serie_by_id,
         crate::controllers::update_serie,
     ),

@@ -1,5 +1,5 @@
 use actix_web::{
-    dev, error::ErrorUnauthorized, http::header::HeaderValue, web, Error, FromRequest, HttpRequest,
+    dev, error::ErrorUnauthorized, web, Error, FromRequest, HttpRequest,
 };
 use futures::future::{err, ok, Ready};
 
@@ -16,10 +16,11 @@ impl FromRequest for AuthenticatedRequest {
     type Future = Ready<Result<AuthenticatedRequest, Error>>;
 
     fn from_request(http_request: &HttpRequest, _payload: &mut dev::Payload) -> Self::Future {
-        let auth = http_request.headers().get("Authorization");
-        match auth {
-            Some(_) => {
-                let token = get_token_from_auth_header(auth);
+        let token_cookie = http_request.cookie("token");
+
+        match token_cookie {
+            Some(cookie) => {
+                let token = cookie.value();
                 let pool_from_app_data = http_request.app_data::<web::Data<SqlPool>>();
                 let connection = pool_handler(pool_from_app_data);
                 if Claims::is_valid_token(token) {
@@ -35,10 +36,4 @@ impl FromRequest for AuthenticatedRequest {
             None => err(ErrorUnauthorized("No token provided")),
         }
     }
-}
-
-fn get_token_from_auth_header(auth: Option<&HeaderValue>) -> &str {
-    let splitted_header_token: Vec<&str> =
-        auth.unwrap().to_str().unwrap().split("Bearer").collect();
-    splitted_header_token[1].trim()
 }

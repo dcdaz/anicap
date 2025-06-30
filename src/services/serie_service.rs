@@ -15,10 +15,10 @@ pub fn add_new_serie(
     )
 }
 
-pub fn get_all_series(
+pub fn search_series(
     mut authenticated_request: AuthenticatedRequest,
 ) -> Result<Vec<SerieResponse>, ServerError> {
-    serie_repository::get_all_series(
+    serie_repository::search_series(
         &mut authenticated_request.connection,
         authenticated_request.user_id,
     )
