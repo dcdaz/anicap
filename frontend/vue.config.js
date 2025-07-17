@@ -1,6 +1,6 @@
 module.exports = {
     transpileDependencies: true,
-    publicPath: '',
+    publicPath: '/',
     pages: {
         index: {
             entry: 'src/main.js',
