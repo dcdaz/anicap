@@ -13,7 +13,7 @@ const sessionStore = defineStore(
         persist: true,
         actions: {
             getLoginUrl() {
-                return this.baseUrl + '/appuser'
+                return `${this.baseUrl}/appuser`
             },
             async login(username, password) {
                 const loginRequest = {
@@ -22,7 +22,7 @@ const sessionStore = defineStore(
                 }
                 
                 await ky.post(
-                    this.getLoginUrl() + '/login', 
+                    `${this.getLoginUrl()}/login`,
                     {
                         json: loginRequest,
                         credentials: 'include'
@@ -30,11 +30,18 @@ const sessionStore = defineStore(
                 ).json()
                 .then((data) => this.token = data.access_token)
                 .catch((error) => console.error("Ky error: ", error));
-                router.push('all-series-dashboard')
+                router.push({ name: 'home' })
             },
             async logout() {
-                ky.get(this.getLoginUrl() + '/logout')
+                ky.get(
+                    `${this.getLoginUrl()}/logout`,
+                    {
+                        credentials: 'include'
+                    }
+                )
+                .then(() => this.token = null)
                 .catch((error) => console.error("Ky error: ", error));
+                router.push({ name: 'login' })
             }
         }
     }

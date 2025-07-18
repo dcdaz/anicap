@@ -1,26 +1,24 @@
 <template>
     <section class="section"/>
-    <section class="section"/>
-    <section class="section"/>
     <div class="columns is-centered is-vcentered">
-        <span class="column is-two-fifths"></span>
+        <span class="column is-one-fifth"></span>
         <div class="column">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
-                    <input v-model="username" class="input" type="text" placeholder="Username">
+                    <input v-model="username" class="input" type="text" placeholder="Username" @keyup.enter="login">
                     <span class="icon is-small is-left">
-                    <i class="mdi mdi-email-outline"></i>
+                        <i class="mdi mdi-account-outline"></i>
                     </span>
                     <span class="icon is-small is-right">
-                    <i class="mdi mdi-check"></i>
+                        <i class="mdi mdi-check"></i>
                     </span>
                 </p>
             </div>
             <div class="field">
                 <p class="control has-icons-left">
-                    <input v-model="password" class="input" type="password" placeholder="Password">
+                    <input v-model="password" class="input" type="password" placeholder="Password" @keyup.enter="login">
                     <span class="icon is-small is-left">
-                    <i class="mdi mdi-lock-outline"></i>
+                        <i class="mdi mdi-lock-outline"></i>
                     </span>
                 </p>
             </div>
@@ -32,7 +30,7 @@
                 </p>
             </div>
         </div>
-        <span class="column is-two-fifths"></span>
+        <span class="column is-one-fifth"></span>
     </div>
 </template>
 

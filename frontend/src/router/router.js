@@ -8,8 +8,8 @@ const routes = [
         component: Login
     },
     {
-        path: '/all-series-dashboard',
-        name: 'all-series-dashboard',
+        path: '/',
+        name: 'home',
         component: AllSeriesDashboard
     },
     {
