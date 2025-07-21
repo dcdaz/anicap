@@ -1,5 +1,6 @@
 # ANICAP
-Small project to keep track of the chapters and seasons of a TV series or anime
+
+Small project to track chapters and seasons of a TV series or anime, to review frontend take a look at [Anicap Frontend](/frontend/README.md)
 
 
 ## Requirements
