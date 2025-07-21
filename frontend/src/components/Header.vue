@@ -15,9 +15,6 @@
             <div id="headerMenu" class="navbar-menu">
                 <div class="navbar-start">
                     <span class="navbar-item"></span>
-                    <!-- <a class="navbar-item" href="{{ get_url(path='@/blog/_index.md') }}">blog</a>
-                    <a class="navbar-item" href="{{ get_url(path='@/projects/_index.md') }}">projects</a>
-                    <a class="navbar-item" href="{{ get_url(path='@/about.md') }}">about</a> -->
                 </div>
                 <div class="navbar-end">
                     <div class="navbar-item">
