@@ -1,4 +1,4 @@
-import { Login, AllSeriesDashboard, SerieDashboard, NotFound } from "@/components";
+import { Login, AllSeriesDashboard, SerieDashboard, NewSerie, NotFound } from "@/components";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -16,6 +16,11 @@ const routes = [
         path: '/serie-dashboard/:serieId',
         name: 'serie-dashboard',
         component: SerieDashboard
+    },
+    {
+        path: '/add-serie',
+        name: 'add-serie',
+        component: NewSerie
     },
     {
         path: '/:pathMatch(.*)*',

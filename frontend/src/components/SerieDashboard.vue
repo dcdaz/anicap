@@ -13,7 +13,6 @@
                     </div>
                     <div class="media-content">
                         <p class="title is-4">{{ serie.name }}</p>
-                        <!-- <p class="subtitle is-6">@johnsmith</p> -->
                     </div>
                 </div>
 
@@ -28,9 +27,9 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input class="input editable" type="number" v-model="serie.season" disabled /></td>
-                                <td><input class="input editable" type="number" v-model="serie.chapter" disabled /></td>
-                                <td><input class="input editable" type="number" v-model="serie.score" disabled /></td>
+                                <td><input class="input editable is-small" type="number" v-model="serie.season" disabled /></td>
+                                <td><input class="input editable is-small" type="number" v-model="serie.chapter" disabled /></td>
+                                <td><input class="input editable is-small" type="number" v-model="serie.score" disabled /></td>
                             </tr>
                         </tbody>
                     </table>
@@ -55,7 +54,7 @@
 
 <script setup lang="ts">
     import { onMounted, reactive, ref } from 'vue'
-    import SerieService from '@/services/serie-service'
+    import { SerieService } from '@/services/'
     import Serie from '@/types/serie'
 
     const serieService = new SerieService()
@@ -80,13 +79,7 @@
     }
 
     async function updateSerie() {
-        const payload = {
-            name: serie.name,
-            season: serie.season,
-            chapter: serie.chapter,
-            score: serie.score
-        }
-        serieService.updateSerie(payload).then(() => editSerie(false))
+        serieService.updateSerie(serie).then(() => editSerie(false))
     }
 
     async function deleteSerie() {

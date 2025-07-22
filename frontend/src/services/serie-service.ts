@@ -1,6 +1,7 @@
 import ky from 'ky'
 import Serie from '@/types/serie'
 import BaseService from '@/services/base-service'
+import SerieRequest from '@/types/serie-request'
 
 class SerieService extends BaseService {
 
@@ -18,11 +19,31 @@ class SerieService extends BaseService {
         })
     }
 
-    async updateSerie(payload: any) {
+    async addSerie(request: SerieRequest) {
+        await ky.post(
+            `${this.baseUrl}/serie`,
+            {
+                json: request,
+                credentials: 'include'
+            }
+        )
+        .then((response) => {
+            if (response.status === 201) {
+                this.router.push({ name: 'home'})
+            }
+        })
+        .catch((error) => {
+            if (error.response.status === 401) {
+                this.router.push({ name: 'login' })
+            }
+        })
+    }
+
+    async updateSerie(request: SerieRequest) {
         await ky.put(
             `${this.baseUrl}/serie/${this.route.params.serieId}`,
             {
-                json: payload,
+                json: request,
                 credentials: 'include'
             }
         )

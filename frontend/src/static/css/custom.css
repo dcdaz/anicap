@@ -6,6 +6,11 @@
   height: 150px;
 }
 
+#new-serie-name {
+  width: 50%;
+  max-width: 350px;
+}
+
 input[type=number] {
     -moz-appearance:textfield; /* Firefox */
 }
