@@ -30,7 +30,7 @@
     </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
     import toggleTheme from '@/utils/theme-switcher'
     import sessionStore from '@/stores/session-store'
 

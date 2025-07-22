@@ -3,7 +3,7 @@ use crate::schema::serie;
 use crate::schema::serie::dsl::*;
 use crate::utils::{ServerError, SqlConnection};
 use diesel::{
-    insert_into, update, BoolExpressionMethods, ExpressionMethods, QueryDsl, RunQueryDsl,
+    insert_into, update, delete, BoolExpressionMethods, ExpressionMethods, QueryDsl, RunQueryDsl,
 };
 
 pub fn add_new_serie(
@@ -65,6 +65,15 @@ pub fn update_serie(
             chapter.eq(updated_serie.chapter),
             score.eq(updated_serie.score),
         ))
+        .execute(connection)
+        .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
+}
+
+pub fn delete_serie(
+    connection: &mut SqlConnection,
+    serie_id: i16,
+) -> Result<usize, ServerError> {
+    delete(serie.filter(id.eq(serie_id)))
         .execute(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
 }

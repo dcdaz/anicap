@@ -24,30 +24,18 @@
     <p v-else class="has-text-centered">No data</p>
 </template>
 
-<script setup>
-    import ky from 'ky'
-    import { useRouter } from 'vue-router'
-    import { inject, onMounted, ref } from 'vue'
+<script setup lang="ts">
+    import { onMounted, ref } from 'vue'
+    import Serie from '@/types/serie'
+    import SearchService from '@/services/search-service'
 
-    const baseUrl = inject('baseUrl')
-    const router = useRouter()
+    const searchService = new SearchService()
     const shouldRender = ref(false)
-    var series = []
+    var series: Serie[]
     onMounted(async () => {
-        await ky.get(
-            `${baseUrl}/serie`,
-            {
-                credentials: 'include'
-            }
-        ).json()
-        .then((data) => {
+        searchService.searchSeries().then((data) => {
             shouldRender.value = true
-            series = data
-        })
-        .catch((error) => {
-            if (error.response.status === 401) {
-                router.push({ name: 'login' })
-            }
+            series = data as Serie[]
         })
     })
 </script>

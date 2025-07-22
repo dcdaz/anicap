@@ -13,6 +13,7 @@ use utoipa::{
         crate::controllers::search_series,
         crate::controllers::get_serie_by_id,
         crate::controllers::update_serie,
+        crate::controllers::delete_serie,
     ),
     modifiers(&SecurityAddon)
 )]

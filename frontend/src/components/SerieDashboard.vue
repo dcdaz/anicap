@@ -38,83 +38,58 @@
             </div>
             <footer class="card-footer">
                 <a class="card-footer-item mdi mdi-arrow-left-circle has-text-current" @click="$router.go(-1)"> Back</a>
-                <a class="card-footer-item has-text-current" @click="edit(true)">
-                    <p v-if="shouldEdit" @click="update">
+                <a class="card-footer-item has-text-current" @click="editSerie(true)">
+                    <p v-if="shouldEdit" @click="updateSerie">
                         <span class="mdi mdi-content-save"></span> Save
                     </p>
                     <p v-else>
                         <span class="mdi mdi-note-edit"></span> Edit
                     </p>
                 </a>
-                <a class="card-footer-item mdi mdi-delete has-text-current"> Delete</a>
+                <a class="card-footer-item mdi mdi-delete has-text-current" @click="deleteSerie"> Delete</a>
             </footer>
         </div>
     </div>
     <p v-else class="has-text-centered">No data</p>
 </template>
 
-<script setup>
-    import ky from 'ky';
-    import { useRoute, useRouter } from 'vue-router';
-    import { inject, onMounted, reactive, ref } from 'vue';
+<script setup lang="ts">
+    import { onMounted, reactive, ref } from 'vue'
+    import SerieService from '@/services/serie-service'
+    import Serie from '@/types/serie'
 
-    const baseUrl = inject('baseUrl')
-    const route = useRoute()
-    const router = useRouter()
+    const serieService = new SerieService()
     const shouldRender = ref(false)
     const shouldEdit = ref(false)
-    var serie = {}
+    var serie: Serie
 
     onMounted(async () => {
-        await ky.get(
-            `${baseUrl}/serie/${route.params.serieId}`,
-            {
-                credentials: 'include'
-            }
-        ).json()
-        .then((data) => {
+        serieService.get().then((response) => {
             shouldRender.value = true
-            serie = reactive({
-                name: data.name,
-                season: data.season,
-                chapter: data.chapter,
-                score: data.score
-            })
+            serie = reactive(response as Serie)
         })
-        .catch((error) => {
-            if (error.response.status === 401) {
-                router.push({ name: 'login' })
-            }
-        })
+        
     })
 
-    function edit(isEditable) {
+    function editSerie(isEditable: boolean) {
         const inputs = document.getElementsByClassName('editable')
         for (let i = 0; i < inputs.length; i++) {
-            inputs[i].disabled = !isEditable
+            (inputs[i] as HTMLInputElement).disabled = !isEditable
         }
         shouldEdit.value = isEditable
     }
 
-    async function update() {
+    async function updateSerie() {
         const payload = {
             name: serie.name,
             season: serie.season,
             chapter: serie.chapter,
             score: serie.score
         }
-        await ky.put(
-            `${baseUrl}/serie/${route.params.serieId}`,
-            {
-                json: payload,
-                credentials: 'include'
-            }
-        )
-        .catch((error) => {
-            if (error.response.status === 401) {
-                router.push({ name: 'login' })
-            }
-        })
-        edit(false)
+        serieService.updateSerie(payload).then(() => editSerie(false))
+    }
+
+    async function deleteSerie() {
+        serieService.deleteSerie()
     }
 </script>

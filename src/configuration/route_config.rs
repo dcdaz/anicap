@@ -9,7 +9,7 @@ pub fn get_cors() -> Cors {
 // Endpoints registration config
 pub fn routes(config: &mut web::ServiceConfig) {
     use crate::controllers::{
-        search_series, get_serie_by_id, insert_serie, login, logout, register, update_serie,
+        search_series, get_serie_by_id, insert_serie, login, logout, register, update_serie, delete_serie,
     };
     use utoipa_swagger_ui::SwaggerUi;
 
@@ -21,6 +21,7 @@ pub fn routes(config: &mut web::ServiceConfig) {
         .service(search_series)
         .service(get_serie_by_id)
         .service(update_serie)
+        .service(delete_serie)
         .service(
             SwaggerUi::new("/swagger/{_:.*}")
                 .url("/api-docs/openapi.json", ApiDoc::openapi().clone()),

@@ -1,4 +1,4 @@
-use actix_web::{get, post, put, web, HttpResponse};
+use actix_web::{get, post, put, delete, web, HttpResponse};
 
 use super::handler_types::ServerResponse;
 use crate::controllers::ErrorMessage;
@@ -84,6 +84,7 @@ pub async fn get_serie_by_id(
     security(("token" = [])),
     responses(
         (status = 204),
+        (status = 404),
         (status = 400, body = ErrorMessage),
         (status = 401, body = ErrorMessage),
     )
@@ -98,6 +99,30 @@ pub async fn update_serie(
         authenticated_request,
         serie_id.into_inner().0,
         request.into_inner(),
+    )
+    .map(|_| HttpResponse::NoContent().finish())
+}
+
+#[utoipa::path(
+    delete,
+    path = "/serie/{serie_id}",
+    tag = "Series",
+    description= "Delete a serie",
+    params(("serie_id" = i16, Path, description = "Id of a serie")),
+    security(("token" = [])),
+    responses(
+        (status = 204),
+        (status = 404),
+    )
+)]
+#[delete("/serie/{serie_id}")]
+pub async fn delete_serie(
+    authenticated_request: AuthenticatedRequest,
+    serie_id: web::Path<(i16,)>,
+) -> ServerResponse {
+    serie_service::delete_serie(
+        authenticated_request,
+        serie_id.into_inner().0
     )
     .map(|_| HttpResponse::NoContent().finish())
 }

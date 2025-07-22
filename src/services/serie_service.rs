@@ -49,3 +49,13 @@ pub fn update_serie(
         NewSerie::from_request(authenticated_request.user_id, request),
     )
 }
+
+pub fn delete_serie(
+    mut authenticated_request: AuthenticatedRequest,
+    serie_id: i16,
+) -> Result<usize, ServerError> {
+    serie_repository::delete_serie(
+        &mut authenticated_request.connection,
+        serie_id
+    )
+}
