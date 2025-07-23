@@ -32,7 +32,6 @@
         router.push({ name: 'login' })
     } else {
         shouldRender.value = true
-        router.push({ name: 'home' })
         onMounted(() => {
             navbarBurgerMenu()
         })

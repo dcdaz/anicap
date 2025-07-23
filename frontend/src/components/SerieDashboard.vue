@@ -38,10 +38,10 @@
             <footer class="card-footer">
                 <a class="card-footer-item mdi mdi-arrow-left-circle has-text-current" @click="$router.go(-1)"> Back</a>
                 <a class="card-footer-item has-text-current" @click="editSerie(true)">
-                    <p v-if="shouldEdit" @click="updateSerie">
+                    <p v-show="shouldEdit" @click="updateSerie">
                         <span class="mdi mdi-content-save"></span> Save
                     </p>
-                    <p v-else>
+                    <p v-show="!shouldEdit">
                         <span class="mdi mdi-note-edit"></span> Edit
                     </p>
                 </a>

@@ -34,7 +34,7 @@ const sessionStore = defineStore(
                         credentials: 'include'
                     }
                 ).json()
-                .then((data: any) => this.token = data.access_token)
+                .then((response: any) => this.token = response.access_token)
                 .catch((error) => console.error("Ky error: ", error));
                 router.push({ name: 'home' })
             },

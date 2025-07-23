@@ -1,5 +1,5 @@
 <template>
-    <div v-if="shouldRender">
+    <div v-show="shouldRender">
         <div class="columns">
             <span class="column is-11"></span>
             <router-link :to="'/add-serie'" class="column mdi mdi-plus-box has-text-current"> Add serie</router-link>
@@ -27,7 +27,6 @@
             </table>
         </div>
     </div>
-    <p v-else class="has-text-centered">No data</p>
 </template>
 
 <script setup lang="ts">
@@ -39,9 +38,9 @@
     const shouldRender = ref(false)
     var series: Serie[]
     onMounted(async () => {
-        searchService.searchSeries().then((data) => {
+        searchService.searchSeries().then((response) => {
             shouldRender.value = true
-            series = data as Serie[]
+            series = response as Serie[]
         })
     })
 </script>
