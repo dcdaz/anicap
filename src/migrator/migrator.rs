@@ -1,7 +1,7 @@
-use std::{collections::HashMap, fs, usize};
+use std::{collections::HashMap, fs};
 
-use crate::{models::{self, Migration, NewMigration}, utils::{self, SqlConnection}};
-use diesel::{insert_into, query_dsl::methods::SelectDsl, result::Error, sql_query, RunQueryDsl};
+use crate::{models::Migration, utils::{self, SqlConnection}};
+use diesel::{insert_into, query_dsl::methods::SelectDsl, sql_query, RunQueryDsl};
 use crate::schema::migration::dsl::*;
 
 const DATABASE_DIR: &str = "database/migrations";
@@ -30,9 +30,9 @@ fn read_migration_files(applied_migrations: Vec<String>) -> HashMap<String, Stri
 }
 
 fn get_applied_migration_names(connection: &mut SqlConnection) -> Vec<String> {
-    migration.load::<Migration>(connection).unwrap()
-    .iter().map(|m| m.clone().migration_name)
-    .collect::<Vec<String>>()
+    migration
+        .select(migration_name)
+        .load::<String>(connection).unwrap()
 }
 
 fn run_migrations(connection: &mut SqlConnection, applicable_migrations: HashMap<String, String>) {
@@ -41,7 +41,7 @@ fn run_migrations(connection: &mut SqlConnection, applicable_migrations: HashMap
             match sql_query(content).execute(connection) {
                 Ok(_) => {
                     let success = insert_into(migration)
-                        .values(&NewMigration { migration_name: name.to_owned() })
+                        .values(&Migration { migration_name: name.to_owned() })
                         .execute(connection);
 
                     match success { 
