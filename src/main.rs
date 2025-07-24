@@ -7,6 +7,7 @@ extern crate lazy_static;
 
 mod configuration;
 mod controllers;
+mod migrator;
 mod models;
 mod repositories;
 mod schema;
@@ -22,6 +23,9 @@ async fn main() -> std::io::Result<()> {
     std::env::set_var("RUST_LOG", configuration::SERVER_CONFIG.clone().log_type);
     // Init env_logger
     env_logger::init();
+
+    // Run migrations if there's any new migration
+    migrator::migrate();
 
     let server_url = format!(
         "{}:{}",

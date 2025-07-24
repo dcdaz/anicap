@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted, reactive, ref } from 'vue'
+    import { onMounted, ref } from 'vue'
     import { SerieService } from '@/services/'
     import Serie from '@/types/serie'
 
@@ -65,9 +65,8 @@
     onMounted(async () => {
         serieService.get().then((response) => {
             shouldRender.value = true
-            serie = reactive(response as Serie)
+            serie = response as Serie
         })
-        
     })
 
     function editSerie(isEditable: boolean) {

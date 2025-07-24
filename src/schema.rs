@@ -26,3 +26,11 @@ table! {
 }
 
 joinable!(serie -> app_user(user_id));
+
+table! {
+    migration(id) {
+        id -> SmallInt,
+        migration_name -> VarChar,
+        migrated_at -> Timestamp
+    }
+}

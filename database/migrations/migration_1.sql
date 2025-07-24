@@ -1,0 +1,2 @@
+ALTER TABLE serie 
+    ADD COLUMN favorite BOOLEAN DEFAULT false;
