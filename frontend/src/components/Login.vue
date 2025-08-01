@@ -34,9 +34,9 @@
     </div>
 </template>
 
-<script setup>
-    import { ref } from 'vue';
-    import sessionStore from '@/stores/session-store';
+<script setup lang="ts">
+    import { ref } from 'vue'
+    import sessionStore from '@/stores/session-store'
 
     const session = sessionStore();
     const username = ref()

@@ -1,4 +1,5 @@
 <template>
+    <br>
     <div class="columns">
         <span class="column is-one-fifth" />
         <div class="column">
@@ -16,12 +17,12 @@
     @import "./static/css/custom.css";
 </style>
 
-<script setup>
-    import Header from './components/Header.vue'
-    import sessionStore from '@/stores/session-store'
+<script setup lang="ts">
+    import Header from '@/components/Header.vue'
+    import sessionStore from './stores/session-store'
     import { useRouter } from 'vue-router'
     import { onMounted, ref } from 'vue'
-    import navbarBurgerMenu from './utils/navbar'
+    import navbarBurgerMenu from '@/utils/navbar'
 
     const router = useRouter()
     const session = sessionStore()
@@ -31,7 +32,6 @@
         router.push({ name: 'login' })
     } else {
         shouldRender.value = true
-        router.push({ name: 'home' })
         onMounted(() => {
             navbarBurgerMenu()
         })

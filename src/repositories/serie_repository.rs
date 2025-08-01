@@ -3,7 +3,7 @@ use crate::schema::serie;
 use crate::schema::serie::dsl::*;
 use crate::utils::{ServerError, SqlConnection};
 use diesel::{
-    insert_into, update, BoolExpressionMethods, ExpressionMethods, QueryDsl, RunQueryDsl,
+    delete, insert_into, update, BoolExpressionMethods, ExpressionMethods, QueryDsl, RunQueryDsl
 };
 
 pub fn add_new_serie(
@@ -24,11 +24,12 @@ pub fn search_series(
         .filter(user_id.eq(logged_user_id))
         .select((
             serie::id,
-            serie::user_id,
             serie::name,
             serie::season,
             serie::chapter,
             serie::score,
+            serie::favorite,
+            serie::wish_to_see,
         ))
         .load::<Serie>(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
@@ -43,11 +44,12 @@ pub fn get_serie_by_id(
         .filter(user_id.eq(logged_user_id).and(id.eq(serie_id)))
         .select((
             serie::id,
-            serie::user_id,
             serie::name,
             serie::season,
             serie::chapter,
             serie::score,
+            serie::favorite,
+            serie::wish_to_see,
         ))
         .first::<Serie>(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
@@ -64,7 +66,18 @@ pub fn update_serie(
             season.eq(updated_serie.season),
             chapter.eq(updated_serie.chapter),
             score.eq(updated_serie.score),
+            favorite.eq(updated_serie.favorite),
+            wish_to_see.eq(updated_serie.wish_to_see),
         ))
+        .execute(connection)
+        .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
+}
+
+pub fn delete_serie(
+    connection: &mut SqlConnection,
+    serie_id: i16,
+) -> Result<usize, ServerError> {
+    delete(serie.filter(id.eq(serie_id)))
         .execute(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
 }

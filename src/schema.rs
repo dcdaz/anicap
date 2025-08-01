@@ -22,7 +22,17 @@ table! {
         season -> SmallInt,
         chapter -> SmallInt,
         score -> Float,
+        favorite -> Bool,
+        wish_to_see -> Bool,
     }
 }
 
 joinable!(serie -> app_user(user_id));
+
+table! {
+    migration(id) {
+        id -> SmallInt,
+        migration_name -> VarChar,
+        migrated_at -> Timestamp
+    }
+}

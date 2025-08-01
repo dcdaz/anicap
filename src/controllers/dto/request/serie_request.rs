@@ -14,6 +14,8 @@ pub struct SerieRequest {
     pub chapter: i16,
     #[validate(range(min = 0.0, max = 10.0, code = "out_of_range", message = "Score must be between 0.0 and 10.0"))]
     pub score: f32,
+    pub favorite: bool,
+    pub wish_to_see: bool,
 }
 
 impl Default for SerieRequest {
@@ -23,6 +25,8 @@ impl Default for SerieRequest {
             season: 0,
             chapter: 0,
             score: 0.0,
+            favorite: false,
+            wish_to_see: false,
         }
     }
 }

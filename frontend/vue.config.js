@@ -3,7 +3,7 @@ module.exports = {
     publicPath: '/',
     pages: {
         index: {
-            entry: 'src/main.js',
+            entry: 'src/main.ts',
             title: 'Anicap',
         },
     },

@@ -1,4 +1,4 @@
-import { Login, AllSeriesDashboard, SerieDashboard, NotFound } from "@/components";
+import { Login, AllSeriesDashboard, SerieDashboard, NewSerie, NotFound } from "@/components";
 import { createRouter, createWebHistory } from "vue-router";
 
 const routes = [
@@ -18,6 +18,11 @@ const routes = [
         component: SerieDashboard
     },
     {
+        path: '/add-serie',
+        name: 'add-serie',
+        component: NewSerie
+    },
+    {
         path: '/:pathMatch(.*)*',
         name: 'NotFound',
         component: NotFound
@@ -27,6 +32,10 @@ const routes = [
 const router =  createRouter({
     history: createWebHistory(),
     routes: routes
+})
+
+router.beforeEach((to, from, next) => {
+    next()
 })
 
 export default router
