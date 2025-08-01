@@ -8,6 +8,7 @@ Small project to track chapters and seasons of a TV series or anime, to review f
 ### Dev
 
 - sqlite3-devel (openSuSe)
+- libsqlite3-dev (Debian based)
 
 
 ## Config file

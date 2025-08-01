@@ -22,6 +22,8 @@ table! {
         season -> SmallInt,
         chapter -> SmallInt,
         score -> Float,
+        favorite -> Bool,
+        wish_to_see -> Bool,
     }
 }
 

@@ -4,11 +4,13 @@ use crate::schema::serie;
 #[derive(Queryable)]
 pub struct Serie {
     pub id: i16,
-    pub user_id: i16,
+    // pub user_id: i16,
     pub name: String,
     pub season: i16,
     pub chapter: i16,
     pub score: f32,
+    pub favorite: bool,
+    pub wish_to_see: bool,
 }
 
 #[derive(Insertable)]
@@ -19,6 +21,8 @@ pub struct NewSerie {
     pub season: i16,
     pub chapter: i16,
     pub score: f32,
+    pub favorite: bool,
+    pub wish_to_see: bool,
 }
 
 impl NewSerie {
@@ -29,6 +33,8 @@ impl NewSerie {
             season: request.season,
             chapter: request.chapter,
             score: request.score,
+            favorite: request.favorite,
+            wish_to_see: request.wish_to_see
         }
     }
 }

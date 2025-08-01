@@ -3,7 +3,7 @@
         <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <router-link :to="'/'">
-                    <span class="title mdi mdi-television-classic"> Anicap</span>
+                    <span class="has-text-info title mdi mdi-television-classic"> Anicap</span>
                 </router-link>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="headerMenu">
                     <span></span>

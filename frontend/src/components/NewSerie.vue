@@ -19,7 +19,7 @@
 
             <div class="content">
                 <table class="table is-fullwidth is-striped">
-                    <thead>
+                    <thead class="has-text-centered">
                         <tr>
                             <th>Season</th>
                             <th>Chapter</th>
@@ -28,18 +28,18 @@
                     </thead>
                     <tbody>
                         <tr>
-                            <td><input class="input is-small" type="number" v-model="serie.season" /></td>
-                            <td><input class="input is-small" type="number" v-model="serie.chapter" /></td>
-                            <td><input class="input is-small" type="number" v-model="serie.score" /></td>
+                            <td><input class="input is-small has-text-centered" type="number" v-model="serie.season" /></td>
+                            <td><input class="input is-small has-text-centered" type="number" v-model="serie.chapter" /></td>
+                            <td><input class="input is-small has-text-centered" type="number" v-model="serie.score" /></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <footer class="card-footer">
+        <footer class="card-footer has-text-centered">
             <a class="card-footer-item mdi mdi-arrow-left-circle has-text-current" @click="$router.go(-1)"> Back</a>
-            <a id="add-button" class="card-footer-item mdi mdi-delete has-text-current" @click="addSerie"> Add</a>
-            <span class="card-footer-item"></span>
+            <a id="add-button" class="card-footer-item mdi mdi-delete has-text-current" @click="addSerie(false)"> Add</a>
+            <a class="card-footer-item mdi mdi-star-box has-text-current" @click="addSerie(true)"> Add to wish list</a>
         </footer>
     </div>
 </template>
@@ -53,12 +53,23 @@
         name: '',
         season: 0,
         chapter: 0,
-        score: 0
+        score: 0,
+        favorite: false,
+        wish_to_see: false,
     }
 
-    async function addSerie() {
+    async function addSerie(wishToSee: boolean) {
         if (serie.name != '') {
-            serieService.addSerie(serie)
+            wishToSee ? serieService.addSerie(
+                {
+                    name: serie.name,
+                    season: 0,
+                    chapter: 0,
+                    score: 0,
+                    favorite: false,
+                    wish_to_see: true,
+                }
+            ) : serieService.addSerie(serie)
         }
     }
 </script>

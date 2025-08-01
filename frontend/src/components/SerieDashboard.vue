@@ -12,13 +12,27 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p class="title is-4">{{ serie.name }}</p>
+                        <p
+                            id="serie-title"
+                            class="title is-4"
+                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                        >
+                            {{ serie.name }}
+                        </p>
                     </div>
+                    <a
+                        :class="{ 'has-text-warning mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
+                        @click="addToFavorite($event, serie)"
+                    ></a>
+                    <a
+                        :class="{ 'has-text-primary mdi mdi-star-box': serie.wish_to_see, 'has-text-current mdi mdi-star-box-outline': !serie.wish_to_see }"
+                        @click="addtToWhishList($event, serie)"
+                    ></a>
                 </div>
 
                 <div class="content">
                     <table class="table is-fullwidth is-striped">
-                        <thead>
+                        <thead class="has-text-centered">
                             <tr>
                                 <th>Season</th>
                                 <th>Chapter</th>
@@ -27,15 +41,15 @@
                         </thead>
                         <tbody>
                             <tr>
-                                <td><input class="input editable is-small" type="number" v-model="serie.season" disabled /></td>
-                                <td><input class="input editable is-small" type="number" v-model="serie.chapter" disabled /></td>
-                                <td><input class="input editable is-small" type="number" v-model="serie.score" disabled /></td>
+                                <td><input class="input editable is-small has-text-centered" type="number" v-model="serie.season" disabled /></td>
+                                <td><input class="input editable is-small has-text-centered" type="number" v-model="serie.chapter" disabled /></td>
+                                <td><input class="input editable is-small has-text-centered" type="number" v-model="serie.score" disabled /></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <footer class="card-footer">
+            <footer class="card-footer has-text-centered">
                 <a class="card-footer-item mdi mdi-arrow-left-circle has-text-current" @click="$router.go(-1)"> Back</a>
                 <a class="card-footer-item has-text-current" @click="editSerie(true)">
                     <p v-show="shouldEdit" @click="updateSerie">
@@ -79,6 +93,30 @@
 
     async function updateSerie() {
         serieService.updateSerie(serie).then(() => editSerie(false))
+    }
+
+    function changeTitleAndElementColor(currentElement: Element | null, condition: boolean, className: string) {
+        const titleElement = document.getElementById('serie-title')
+        condition
+            ? currentElement?.classList.replace('has-text-current', className)
+            : currentElement?.classList.replace(className, 'has-text-current')
+        condition ? titleElement?.classList.add(className) : titleElement?.classList.remove(className)
+    }
+
+    async function addToFavorite(event: Event, serie: Serie) {
+        serie.favorite = !serie.favorite
+        const currentElement = event?.target as Element
+        currentElement.className = `has-text-current mdi ${serie.favorite ? 'mdi-heart' : 'mdi-heart-outline'}`
+        changeTitleAndElementColor(currentElement, serie.favorite, 'has-text-warning')
+        updateSerie()
+    }
+
+    async function addtToWhishList(event: Event, serie: Serie) {
+        serie.wish_to_see = !serie.wish_to_see
+        const currentElement = event?.target as Element
+        currentElement.className = `has-text-current mdi ${serie.wish_to_see ? 'mdi-star-box' : 'mdi-star-box-outline'}`
+        changeTitleAndElementColor(currentElement, serie.wish_to_see, 'has-text-primary')
+        updateSerie()
     }
 
     async function deleteSerie() {

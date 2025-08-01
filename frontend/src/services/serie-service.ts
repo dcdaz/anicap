@@ -39,9 +39,10 @@ class SerieService extends BaseService {
         })
     }
 
-    async updateSerie(request: SerieRequest) {
+    async updateSerie(request: SerieRequest, serieId: number | null = null) {
+        const validSerieId = serieId != null ? serieId : this.route.params.serieId
         await ky.put(
-            `${this.baseUrl}/serie/${this.route.params.serieId}`,
+            `${this.baseUrl}/serie/${validSerieId}`,
             {
                 json: request,
                 credentials: 'include'

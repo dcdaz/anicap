@@ -1,7 +1,7 @@
 <template>
     <div v-show="shouldRender">
         <div class="columns">
-            <span class="column is-11"></span>
+            <span class="column is-four-fifths-fullhd is-three-quarters is-offset-1"></span>
             <router-link :to="'/add-serie'" class="column mdi mdi-plus-box has-text-current"> Add serie</router-link>
         </div>
         <div class="box">
@@ -9,19 +9,48 @@
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Season</th>
-                        <th>Chapter</th>
-                        <th>Score</th>
+                        <th class="has-text-centered">Season</th>
+                        <th class="has-text-centered">Chapter</th>
+                        <th class="has-text-centered">Score</th>
+                        <th class="has-text-centered">Favorite</th>
+                        <th class="has-text-centered">Whish to see</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="serie in series" :key="serie.id">
-                        <td>
+                        <td :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }">
                             <router-link :to="`/serie-dashboard/${serie.id}`" class="has-text-current">{{ serie.name }}</router-link>
                         </td>
-                        <td>{{ serie.season }}</td>
-                        <td>{{ serie.chapter }}</td>
-                        <td>{{ serie.score }}</td>
+                        <td
+                            class="has-text-centered"
+                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                        >
+                            {{ serie.season }}
+                        </td>
+                        <td
+                            class="has-text-centered"
+                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                        >
+                            {{ serie.chapter }}
+                        </td>
+                        <td
+                            class="has-text-centered"
+                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                        >
+                            {{ serie.score }}
+                        </td>
+                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }">
+                            <a
+                                :class="{ 'has-text-warning mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
+                                @click="addToFavorite($event, serie)"
+                            ></a>
+                        </td>
+                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }">
+                            <a
+                                :class="{ 'has-text-primary mdi mdi-star-box': serie.wish_to_see, 'has-text-current mdi mdi-star-box-outline': !serie.wish_to_see }"
+                                @click="addtToWhishList($event, serie)"
+                            ></a>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -32,9 +61,10 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue'
     import Serie from '@/types/serie'
-    import { SearchService } from '@/services/'
+    import { SearchService, SerieService } from '@/services/'
 
     const searchService = new SearchService()
+    const serieService = new SerieService()
     const shouldRender = ref(false)
     var series: Serie[]
     onMounted(async () => {
@@ -43,4 +73,27 @@
             series = response as Serie[]
         })
     })
+
+    async function addToFavorite(event: Event, serie: Serie) {
+        serie.favorite = !serie.favorite
+        const currentElement = event?.target as Element
+        currentElement.className = `has-text-current mdi ${serie.favorite ? 'mdi-heart' : 'mdi-heart-outline'}`
+        changeRowColor(currentElement, serie.favorite, 'has-text-warning')
+        serieService.updateSerie(serie, serie.id)
+    }
+
+    async function addtToWhishList(event: Event, serie: Serie) {
+        serie.wish_to_see = !serie.wish_to_see
+        const currentElement = event?.target as Element
+        currentElement.className = `has-text-current mdi ${serie.wish_to_see ? 'mdi-star-box' : 'mdi-star-box-outline'}`;
+        changeRowColor(currentElement, serie.wish_to_see, 'has-text-primary')
+        serieService.updateSerie(serie, serie.id)
+    }
+
+    function changeRowColor(currentElement: Element | null, condition: boolean, className: string) {
+        const wholeRow = (currentElement?.parentElement?.parentElement as Element).children
+        for (let i = 0; i < wholeRow.length; i++) {
+            condition ? wholeRow[i].classList.add(className) : wholeRow[i].classList.remove(className)
+        }
+    }
 </script>
