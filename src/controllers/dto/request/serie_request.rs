@@ -7,6 +7,7 @@ use utoipa::ToSchema;
 #[serde(default)]
 pub struct SerieRequest {
     #[validate(length(min = 1, max = 255, code = "too_long", message = "Name is too long"))]
+    #[serde(deserialize_with = "detrim::string_non_empty")]
     pub name: String,
     #[validate(range(min = 0, code = "invalid_value", message = "Season must be 0 or greater"))]
     pub season: i16,

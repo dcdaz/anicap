@@ -33,6 +33,12 @@
 <script setup lang="ts">
     import toggleTheme from '@/utils/theme-switcher'
     import sessionStore from '@/stores/session-store'
+    import navbarBurgerMenu from '@/utils/navbar'
+    import { onMounted } from 'vue'
+
+    onMounted(() => {
+        navbarBurgerMenu()
+    })
 
     async function logout() {
         sessionStore().logout()

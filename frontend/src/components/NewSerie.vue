@@ -12,7 +12,7 @@
                 </div>
                 <div class="media-content">
                     <p class="title is-5">
-                        Name:&emsp;<input id="new-serie-name" class="input is-small" type="text" v-model.trim="serie.name" /><span></span>
+                        Name:&emsp;<input id="new-serie-name" class="input is-small" type="text" v-model.trim="serie.name" />
                     </p>
                 </div>
             </div>
@@ -70,6 +70,8 @@
                     wish_to_see: true,
                 }
             ) : serieService.addSerie(serie)
+        } else {
+            document.getElementById('new-serie-name')?.focus()
         }
     }
 </script>

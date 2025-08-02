@@ -1,7 +1,8 @@
 <template>
     <div v-show="shouldRender">
         <div class="columns">
-            <span class="column is-four-fifths-fullhd is-three-quarters is-offset-1"></span>
+            &emsp;Search:&emsp;<input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text"/>
+            <span class="column is-two-fifths-fullhd is-one-third is-offset-1"></span>
             <router-link :to="'/add-serie'" class="column mdi mdi-plus-box has-text-current"> Add serie</router-link>
         </div>
         <div class="box">
@@ -71,6 +72,17 @@
         searchService.searchSeries().then((response) => {
             shouldRender.value = true
             series = response as Serie[]
+        })
+        window.addEventListener('keypress', (event) => {
+            if (event.key != '/') {
+                return
+            }
+            const searchBox = document.getElementById('searchBox')
+            if (document.activeElement === searchBox) {
+                return
+            }
+            event.preventDefault()
+            document.getElementById('search-serie-input')?.focus()
         })
     })
 

@@ -1,10 +1,14 @@
+use crate::controllers::QueryParam;
 use crate::models::{NewSerie, Serie};
 use crate::schema::serie;
 use crate::schema::serie::dsl::*;
-use crate::utils::{ServerError, SqlConnection};
+use crate::utils::{DBType, ServerError, SqlConnection};
+use diesel::sql_types::Bool;
 use diesel::{
-    delete, insert_into, update, BoolExpressionMethods, ExpressionMethods, QueryDsl, RunQueryDsl
+    delete, insert_into, update, BoolExpressionMethods, BoxableExpression, ExpressionMethods, QueryDsl, RunQueryDsl, TextExpressionMethods
 };
+
+type BoxablePredicate = Box<dyn BoxableExpression<serie::table, DBType, SqlType = Bool>>;
 
 pub fn add_new_serie(
     connection: &mut SqlConnection,
@@ -16,12 +20,46 @@ pub fn add_new_serie(
         .map_err(|error| ServerError::InsertFailure(error.to_string()))
 }
 
+fn build_filter(
+    logged_user_id: i16,
+    query_param: QueryParam,
+) -> BoxablePredicate {
+    let mut filter: BoxablePredicate = Box::new(user_id.eq(logged_user_id));
+
+    if query_param.name.is_some() {
+        filter = Box::new(filter.and(name.like(format!("%{}%", query_param.name.unwrap()))));
+    }
+
+    if query_param.season.is_some() {
+        filter = Box::new(filter.and(season.eq(query_param.season.unwrap())))
+    }
+
+    if query_param.chapter.is_some() {
+        filter = Box::new(filter.and(chapter.eq(query_param.chapter.unwrap())))
+    }
+
+    if query_param.score.is_some() {
+        filter = Box::new(filter.and(score.eq(query_param.score.unwrap())))
+    }
+
+    if query_param.favorite.is_some() {
+        filter = Box::new(filter.and(favorite.eq(query_param.favorite.unwrap())))
+    }
+
+    if query_param.wish_to_see.is_some() {
+        filter = Box::new(filter.and(wish_to_see.eq(query_param.wish_to_see.unwrap())))
+    }
+
+    filter
+}
+
 pub fn search_series(
     connection: &mut SqlConnection,
     logged_user_id: i16,
+    query_param: QueryParam,
 ) -> Result<Vec<Serie>, ServerError> {
     serie
-        .filter(user_id.eq(logged_user_id))
+        .filter(build_filter(logged_user_id, query_param))
         .select((
             serie::id,
             serie::name,
