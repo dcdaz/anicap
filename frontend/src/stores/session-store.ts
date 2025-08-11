@@ -2,12 +2,6 @@ import { defineStore } from "pinia"
 import ky from "ky"
 import router from "@/router/router"
 
-declare module 'pinia' {
-    export interface PiniaCustomProperties {
-        baseUrl: string
-    }
-}
-
 const sessionStore = defineStore(
     'sessionStore',
     {
@@ -19,7 +13,7 @@ const sessionStore = defineStore(
         persist: true,
         actions: {
             getLoginUrl() {
-                return `${this.baseUrl}/appuser`
+                return `${process.env.VUE_APP_BACKEND_URL}/appuser`
             },
             async login(username: string, password: string) {
                 const loginRequest = {

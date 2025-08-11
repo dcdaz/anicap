@@ -1,13 +1,13 @@
 <template>
     <br>
     <div class="columns">
-        <span class="column is-one-fifth" />
+        <span class="column is-one-fifth-fullhd is-1" />
         <div class="column">
             <Header v-if="shouldRender" />
             <section class="section" v-else/>
             <RouterView :key="$route.fullPath" />
         </div>
-        <span class="column is-one-fifth" />
+        <span class="column is-one-fifth-fullhd is-1" />
     </div>
 </template>
 
@@ -25,14 +25,18 @@
 
     const router = useRouter()
     const session = sessionStore()
-    const shouldRender = ref(false)
+    const shouldRender = ref(true)
 
-    watch(session, () => {
+    function getRenderValue() {
         if (session.token == null) {
             shouldRender.value = false
             router.push({ name: 'login' })
         } else {
             shouldRender.value = true
         }
-    })
+    }
+
+    getRenderValue()
+
+    watch(session, () => getRenderValue())
 </script>

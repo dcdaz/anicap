@@ -16,3 +16,16 @@ pub struct QueryParam {
     pub favorite: Option<bool>,
     pub wish_to_see: Option<bool>,
 }
+
+impl Default for QueryParam {
+    fn default() -> Self {
+        QueryParam {
+            name: None,
+            season: None,
+            chapter: None,
+            score: None,
+            favorite: None,
+            wish_to_see: None
+        }
+    }
+}

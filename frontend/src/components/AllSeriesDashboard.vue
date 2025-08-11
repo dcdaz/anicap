@@ -1,7 +1,7 @@
 <template>
     <div v-show="shouldRender">
         <div class="columns">
-            &emsp;Search:&emsp;<input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text"/>
+            &emsp;Search:&emsp;<input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text" v-model="serieName" @keyup="searchSeries"/>
             <span class="column is-two-fifths-fullhd is-one-third is-offset-1"></span>
             <router-link :to="'/add-serie'" class="column mdi mdi-plus-box has-text-current"> Add serie</router-link>
         </div>
@@ -62,14 +62,17 @@
 <script setup lang="ts">
     import { onMounted, ref } from 'vue'
     import Serie from '@/types/serie'
+    import SerieRequest from '@/types/serie-request'
     import { SearchService, SerieService } from '@/services/'
 
     const searchService = new SearchService()
     const serieService = new SerieService()
     const shouldRender = ref(false)
+    const serieName = ref("")
     var series: Serie[]
+
     onMounted(async () => {
-        searchService.searchSeries().then((response) => {
+        searchService.searchAllSeries().then((response) => {
             shouldRender.value = true
             series = response as Serie[]
         })
@@ -85,6 +88,18 @@
             document.getElementById('search-serie-input')?.focus()
         })
     })
+
+    async function searchSeries() {
+        const queryParams: Partial<SerieRequest> = {}
+        const name = serieName.value
+        if (name.length > 2) {
+            queryParams.name = name
+            searchService.searchSeries(queryParams).then((response) => series = response as Serie[])
+        }
+        if (name.length === 0) {
+            searchService.searchAllSeries().then((response) => series = response as Serie[])
+        }
+    }
 
     async function addToFavorite(event: Event, serie: Serie) {
         serie.favorite = !serie.favorite

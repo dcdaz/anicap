@@ -1,9 +1,8 @@
-import { inject } from "vue"
 import { useRoute, useRouter } from "vue-router"
 
 class BaseService {
 
-    protected baseUrl = inject('baseUrl')
+    protected baseUrl = process.env.VUE_APP_BACKEND_URL
     protected route = useRoute()
     protected router = useRouter()
 }

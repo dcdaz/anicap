@@ -50,7 +50,11 @@ pub async fn search_series(
     authenticated_request: AuthenticatedRequest,
     query_param: Option<web::Query<QueryParam>>,
 ) -> ServerResponse {
-    serie_service::search_series(authenticated_request, query_param.unwrap().0)
+    let params = match query_param {
+        Some(param) => param.0,
+        None => QueryParam::default()
+    };
+    serie_service::search_series(authenticated_request, params)
         .map(|series| HttpResponse::Ok().json(series))
 }
 

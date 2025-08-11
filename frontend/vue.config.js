@@ -4,7 +4,7 @@ module.exports = {
     pages: {
         index: {
             entry: 'src/main.ts',
-            title: 'Anicap',
+            title: process.env.VUE_APP_TITLE,
         },
     },
 }
