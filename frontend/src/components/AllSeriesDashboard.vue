@@ -1,7 +1,8 @@
 <template>
     <div v-show="shouldRender">
-        <div class="columns">
-            &emsp;Search:&emsp;<input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text" v-model="serieName" @keyup="searchSeries"/>
+        <div class="columns is-vcentered">
+            <span class="column is-centered is-1">Search:</span>
+            <input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text" v-model="serieNameParam" @keyup="searchSeries"/>
             <span class="column is-two-fifths-fullhd is-one-third is-offset-1"></span>
             <router-link :to="'/add-serie'" class="column mdi mdi-plus-box has-text-current"> Add serie</router-link>
         </div>
@@ -9,12 +10,12 @@
             <table class="table is-fullwidth is-striped">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th class="has-text-centered">Season</th>
-                        <th class="has-text-centered">Chapter</th>
-                        <th class="has-text-centered">Score</th>
-                        <th class="has-text-centered">Favorite</th>
-                        <th class="has-text-centered">Whish to see</th>
+                        <th>Name<button class="mdi mdi-menu-swap" @click="dashboardService.orderByName($event, series)"/></th>
+                        <th class="has-text-centered">Season<button class="mdi mdi-menu-swap" @click="dashboardService.orderBySeason($event, series)"/></th>
+                        <th class="has-text-centered">Chapter<button class="mdi mdi-menu-swap" @click="dashboardService.orderByChapter($event, series)"/></th>
+                        <th class="has-text-centered">Score<button class="mdi mdi-menu-swap" @click="dashboardService.orderByScore($event, series)"/></th>
+                        <th class="has-text-centered">Favorite<button class="mdi mdi-menu-swap" @click="dashboardService.orderByFavorite($event, series)"/></th>
+                        <th class="has-text-centered">Whish to see<button class="mdi mdi-menu-swap" @click="dashboardService.orderByWishList($event, series)"/></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -60,21 +61,21 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue'
+    import { onMounted, Ref, ref } from 'vue'
     import Serie from '@/types/serie'
     import SerieRequest from '@/types/serie-request'
-    import { SearchService, SerieService } from '@/services/'
+    import { DashboardService, SerieService } from '@/services/'
 
-    const searchService = new SearchService()
+    const dashboardService = new DashboardService()
     const serieService = new SerieService()
     const shouldRender = ref(false)
-    const serieName = ref("")
-    var series: Serie[]
+    const serieNameParam = ref("")
+    var series: Ref<Serie[]> = ref([])
 
     onMounted(async () => {
-        searchService.searchAllSeries().then((response) => {
+        dashboardService.searchAllSeries().then((response) => {
             shouldRender.value = true
-            series = response as Serie[]
+            series.value = response as Serie[]
         })
         window.addEventListener('keypress', (event) => {
             if (event.key != '/') {
@@ -91,13 +92,12 @@
 
     async function searchSeries() {
         const queryParams: Partial<SerieRequest> = {}
-        const name = serieName.value
+        const name = serieNameParam.value
         if (name.length > 2) {
             queryParams.name = name
-            searchService.searchSeries(queryParams).then((response) => series = response as Serie[])
-        }
-        if (name.length === 0) {
-            searchService.searchAllSeries().then((response) => series = response as Serie[])
+            dashboardService.searchSeries(queryParams).then((response) => series.value = response as Serie[])
+        } else {
+            dashboardService.searchAllSeries().then((response) => series.value = response as Serie[])
         }
     }
 
