@@ -1,4 +1,4 @@
-use crate::controllers::{SerieRequest, SerieResponse};
+use crate::controllers::{QueryParam, SerieRequest, SerieResponse};
 use crate::models::NewSerie;
 use crate::repositories::serie_repository;
 use crate::security::AuthenticatedRequest;
@@ -17,10 +17,12 @@ pub fn add_new_serie(
 
 pub fn search_series(
     mut authenticated_request: AuthenticatedRequest,
+    query_param: QueryParam,
 ) -> Result<Vec<SerieResponse>, ServerError> {
     serie_repository::search_series(
         &mut authenticated_request.connection,
         authenticated_request.user_id,
+        query_param,
     )
     .map(SerieResponse::from_series)
 }

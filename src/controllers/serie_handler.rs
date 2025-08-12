@@ -2,6 +2,7 @@ use actix_web::{get, post, put, delete, web, HttpResponse};
 
 use super::handler_types::ServerResponse;
 use crate::controllers::ErrorMessage;
+use crate::controllers::QueryParam;
 use crate::controllers::SerieRequest;
 use crate::controllers::SerieResponse;
 use crate::security::AuthenticatedRequest;
@@ -37,6 +38,7 @@ pub async fn insert_serie(
     path = "/serie",
     tag = "Series",
     description = "Search series",
+    params(QueryParam),
     security(("token" = [])),
     responses(
         (status = 200, body = Vec<SerieResponse>),
@@ -44,8 +46,15 @@ pub async fn insert_serie(
     )
 )]
 #[get("/serie")]
-pub async fn search_series(authenticated_request: AuthenticatedRequest) -> ServerResponse {
-    serie_service::search_series(authenticated_request)
+pub async fn search_series(
+    authenticated_request: AuthenticatedRequest,
+    query_param: Option<web::Query<QueryParam>>,
+) -> ServerResponse {
+    let params = match query_param {
+        Some(param) => param.0,
+        None => QueryParam::default()
+    };
+    serie_service::search_series(authenticated_request, params)
         .map(|series| HttpResponse::Ok().json(series))
 }
 
@@ -65,9 +74,9 @@ pub async fn search_series(authenticated_request: AuthenticatedRequest) -> Serve
 #[get("/serie/{serie_id}")]
 pub async fn get_serie_by_id(
     authenticated_request: AuthenticatedRequest,
-    serie_id: web::Path<(i16,)>,
+    serie_id: web::Path<i16>,
 ) -> ServerResponse {
-    serie_service::get_serie_by_id(authenticated_request, serie_id.into_inner().0)
+    serie_service::get_serie_by_id(authenticated_request, serie_id.into_inner())
         .map(|serie| HttpResponse::Ok().json(serie))
 }
 

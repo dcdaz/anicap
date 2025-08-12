@@ -1,13 +1,13 @@
 <template>
     <br>
     <div class="columns">
-        <span class="column is-one-fifth" />
+        <span class="column is-one-fifth-fullhd is-1" />
         <div class="column">
-            <Header v-if="shouldRender" :is="Header" />
-            <section class="section" v-if="!shouldRender"/>
+            <Header v-if="shouldRender" />
+            <section class="section" v-else/>
             <RouterView :key="$route.fullPath" />
         </div>
-        <span class="column is-one-fifth" />
+        <span class="column is-one-fifth-fullhd is-1" />
     </div>
 </template>
 
@@ -21,19 +21,22 @@
     import Header from '@/components/Header.vue'
     import sessionStore from './stores/session-store'
     import { useRouter } from 'vue-router'
-    import { onMounted, ref } from 'vue'
-    import navbarBurgerMenu from '@/utils/navbar'
+    import { ref, watch } from 'vue'
 
     const router = useRouter()
     const session = sessionStore()
-    const shouldRender = ref(false)
+    const shouldRender = ref(true)
 
-    if(session.token == null) {
-        router.push({ name: 'login' })
-    } else {
-        shouldRender.value = true
-        onMounted(() => {
-            navbarBurgerMenu()
-        })
+    function getRenderValue() {
+        if (session.token == null) {
+            shouldRender.value = false
+            router.push({ name: 'login' })
+        } else {
+            shouldRender.value = true
+        }
     }
+
+    getRenderValue()
+
+    watch(session, () => getRenderValue())
 </script>

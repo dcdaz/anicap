@@ -5,7 +5,7 @@
         <div class="column">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
-                    <input v-model="username" class="input" type="text" placeholder="Username" @keyup.enter="login">
+                    <input v-model="username" class="input" type="text" placeholder="Username" @keyup.enter="login" v-focus>
                     <span class="icon is-small is-left">
                         <i class="mdi mdi-account-outline"></i>
                     </span>
@@ -41,6 +41,10 @@
     const session = sessionStore();
     const username = ref()
     const password = ref()
+
+    const vFocus = {
+       mounted: (el: any) => el.focus()
+    }
 
     async function login() {
         session.login(username?.value, password?.value)

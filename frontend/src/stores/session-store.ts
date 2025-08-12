@@ -1,12 +1,6 @@
 import { defineStore } from "pinia"
-import ky from "ky"
 import router from "@/router/router"
-
-declare module 'pinia' {
-    export interface PiniaCustomProperties {
-        baseUrl: string
-    }
-}
+import Api from "@/utils/api"
 
 const sessionStore = defineStore(
     'sessionStore',
@@ -18,35 +12,30 @@ const sessionStore = defineStore(
         },
         persist: true,
         actions: {
-            getLoginUrl() {
-                return `${this.baseUrl}/appuser`
-            },
             async login(username: string, password: string) {
                 const loginRequest = {
                     username: username,
                     password: password
                 }
                 
-                await ky.post(
-                    `${this.getLoginUrl()}/login`,
+                await new Api().webApi.post(
+                    'appuser/login',
                     {
                         json: loginRequest,
                         credentials: 'include'
                     }
                 ).json()
                 .then((response: any) => this.token = response.access_token)
-                .catch((error) => console.error("Ky error: ", error));
                 router.push({ name: 'home' })
             },
             async logout() {
-                ky.get(
-                    `${this.getLoginUrl()}/logout`,
+                new Api().webApi.get(
+                    'appuser/logout',
                     {
                         credentials: 'include'
                     }
                 )
                 .then(() => this.token = null)
-                .catch((error) => console.error("Ky error: ", error));
                 router.push({ name: 'login' })
             }
         }

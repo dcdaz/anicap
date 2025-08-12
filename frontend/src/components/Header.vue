@@ -3,7 +3,7 @@
         <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <router-link :to="'/'">
-                    <span class="has-text-info title mdi mdi-television-classic"> Anicap</span>
+                    <span class="has-text-info title mdi mdi-television-classic"> {{ appTitle }}</span>
                 </router-link>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="headerMenu">
                     <span></span>
@@ -33,6 +33,14 @@
 <script setup lang="ts">
     import toggleTheme from '@/utils/theme-switcher'
     import sessionStore from '@/stores/session-store'
+    import navbarBurgerMenu from '@/utils/navbar'
+    import { onMounted } from 'vue'
+
+    const appTitle = process.env.VUE_APP_TITLE
+
+    onMounted(() => {
+        navbarBurgerMenu()
+    })
 
     async function logout() {
         sessionStore().logout()

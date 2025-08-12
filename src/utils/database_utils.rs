@@ -1,11 +1,12 @@
 use actix_web::{web, HttpResponse};
 
 use diesel::r2d2::{ConnectionManager, Pool, PooledConnection};
-use diesel::sqlite::SqliteConnection;
+use diesel::sqlite::{Sqlite, SqliteConnection};
 
 // DB Types.
 // If some user wants to change MySQL with PostgresSQL or SQLite
 // Should only change SqlConnection type and its import
+pub type DBType = Sqlite;
 pub type SqlConnection = SqliteConnection;
 pub type SqlPool = Pool<ConnectionManager<SqlConnection>>;
 pub type SqlPooledConnection = PooledConnection<ConnectionManager<SqlConnection>>;

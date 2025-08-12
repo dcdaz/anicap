@@ -12,7 +12,7 @@
                 </div>
                 <div class="media-content">
                     <p class="title is-5">
-                        Name:&emsp;<input id="new-serie-name" class="input is-small" type="text" v-model.trim="serie.name" /><span></span>
+                        Name:&emsp;<input id="new-serie-name" class="input is-small" type="text" v-model.trim="serie.name" />
                     </p>
                 </div>
             </div>
@@ -49,11 +49,8 @@
     import SerieRequest from '@/types/serie-request'
 
     const serieService = new SerieService()
-    var serie: SerieRequest = {
+    var serie: Partial<SerieRequest> = {
         name: '',
-        season: 0,
-        chapter: 0,
-        score: 0,
         favorite: false,
         wish_to_see: false,
     }
@@ -62,7 +59,7 @@
         if (serie.name != '') {
             wishToSee ? serieService.addSerie(
                 {
-                    name: serie.name,
+                    name: serie.name!,
                     season: 0,
                     chapter: 0,
                     score: 0,
@@ -70,6 +67,8 @@
                     wish_to_see: true,
                 }
             ) : serieService.addSerie(serie)
+        } else {
+            document.getElementById('new-serie-name')?.focus()
         }
     }
 </script>
