@@ -1,4 +1,5 @@
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
+use env_logger::{Target, Builder};
 
 #[macro_use]
 extern crate diesel;
@@ -22,7 +23,10 @@ async fn main() -> std::io::Result<()> {
     // Put log type as env variable since env_logger uses it
     std::env::set_var("RUST_LOG", configuration::SERVER_CONFIG.clone().log_type);
     // Init env_logger
-    env_logger::init();
+    let mut builder = Builder::from_default_env();
+    builder.target(Target::Stdout);
+    builder.init();
+
 
     // Run migrations if there's any new migration
     migrator::migrate();

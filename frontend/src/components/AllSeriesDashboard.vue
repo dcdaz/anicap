@@ -2,7 +2,7 @@
     <div v-show="shouldRender">
         <div class="columns is-vcentered">
             <span class="column is-centered is-1">Search:</span>
-            <input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text" v-model="serieNameParam" @keyup="searchSeries"/>
+            <input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text" v-model="serieNameParam" @keyup="searchSeries" placeholder="Type here to search"/>
             <span class="column is-two-fifths-fullhd is-one-third is-offset-1"></span>
             <router-link :to="'/add-serie'" class="column mdi mdi-plus-box has-text-current"> Add serie</router-link>
         </div>
@@ -70,12 +70,12 @@
     const serieService = new SerieService()
     const shouldRender = ref(false)
     const serieNameParam = ref("")
-    var series: Ref<Serie[]> = ref([])
+    const series: Ref<Serie[]> = ref([])
 
     onMounted(async () => {
         dashboardService.searchAllSeries().then((response) => {
             shouldRender.value = true
-            series.value = response as Serie[]
+            series.value = response
         })
         window.addEventListener('keypress', (event) => {
             if (event.key != '/') {
@@ -95,9 +95,9 @@
         const name = serieNameParam.value
         if (name.length > 2) {
             queryParams.name = name
-            dashboardService.searchSeries(queryParams).then((response) => series.value = response as Serie[])
+            dashboardService.searchSeries(queryParams).then((response) => series.value = response)
         } else {
-            dashboardService.searchAllSeries().then((response) => series.value = response as Serie[])
+            dashboardService.searchAllSeries().then((response) => series.value = response)
         }
     }
 

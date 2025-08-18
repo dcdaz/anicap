@@ -15,7 +15,9 @@ class Api {
                             return
                         case 201:
                         case 204:
-                            this.router.push({ name: 'home'})
+                            if (!response.url.includes('logout')) {
+                                this.router.push({ name: 'home'})
+                            }
                             break
                         case 401:
                             this.router.push({ name: 'login' })
@@ -24,10 +26,10 @@ class Api {
                             this.router.push({ name: 'not-found' })
                             break
                         case 502:
-                            this.router.push({name: 'bad-gateway'})
+                            this.router.push({ name: 'bad-gateway' })
                             break
                     }
-                    return new Response(null)
+                    return new Response()
                 },
             ],
         },

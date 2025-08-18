@@ -8,7 +8,7 @@ class SerieService {
     private route = useRoute()
     private webApi = new Api().webApi
 
-    async get(): Promise<void | Serie> {
+    async get(): Promise<Serie> {
         return await this.webApi.get(
             `serie/${this.route.params.serieId}`,
             {
@@ -27,7 +27,7 @@ class SerieService {
         )
     }
 
-    async updateSerie(request: SerieRequest, serieId: number | null = null) {
+    async updateSerie(request: Partial<SerieRequest>, serieId: number | null = null) {
         const validSerieId = serieId != null ? serieId : this.route.params.serieId
         await this.webApi.put(
             `serie/${validSerieId}`,

@@ -6,7 +6,7 @@ class DashboardService {
 
     private webApi = new Api().webApi
 
-    async searchAllSeries(): Promise<void | Serie[]> {
+    async searchAllSeries(): Promise<Serie[]> {
         return await this.webApi.get(
             'serie',
             {
@@ -15,7 +15,7 @@ class DashboardService {
         ).json<Serie[]>()
     }
 
-    async searchSeries(queryParams: Partial<SerieRequest>): Promise<void | Serie[]> {
+    async searchSeries(queryParams: Partial<SerieRequest>): Promise<Serie[]> {
         return await this.webApi.get(
             'serie',
             {
