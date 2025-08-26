@@ -1,13 +1,11 @@
 <template>
     <br>
-    <div class="columns">
-        <span class="column is-one-fifth-fullhd is-1" />
-        <div class="column">
+    <div class="columns is-centered">
+        <div class="column is-three-quarters-fullhd is-four-fifths content">
             <Header v-if="shouldRender" />
             <section class="section" v-else/>
             <RouterView :key="$route.fullPath" />
         </div>
-        <span class="column is-one-fifth-fullhd is-1" />
     </div>
 </template>
 
@@ -25,7 +23,7 @@
 
     const router = useRouter()
     const session = sessionStore()
-    const shouldRender = ref(true)
+    const shouldRender = ref(false)
 
     function getRenderValue() {
         if (session.token == null) {

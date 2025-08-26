@@ -3,7 +3,7 @@
         <nav class="navbar is-transparent" role="navigation" aria-label="main navigation">
             <div class="navbar-brand">
                 <router-link :to="'/'">
-                    <span class="has-text-info title mdi mdi-television-classic"> {{ appTitle }}</span>
+                    <span class="has-text-info title mdi mdi-television-classic">&nbsp;{{ appTitle }}</span>
                 </router-link>
                 <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="headerMenu">
                     <span></span>
@@ -36,7 +36,7 @@
     import navbarBurgerMenu from '@/utils/navbar'
     import { onMounted } from 'vue'
 
-    const appTitle = process.env.VUE_APP_TITLE
+    const appTitle = import.meta.env.VITE_TITLE
 
     onMounted(() => {
         navbarBurgerMenu()

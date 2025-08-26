@@ -6,7 +6,7 @@ class Api {
     private router = useRouter()
 
     public webApi = ky.create({
-        prefixUrl: process.env.VUE_APP_BACKEND_URL,
+        prefixUrl: import.meta.env.VITE_BACKEND_URL,
         hooks: {
             afterResponse: [
                 async (_request, _options, response) => {
@@ -15,7 +15,9 @@ class Api {
                             return
                         case 201:
                         case 204:
-                            this.router.push({ name: 'home'})
+                            if (!response.url.includes('logout')) {
+                                this.router.push({ name: 'home'})
+                            }
                             break
                         case 401:
                             this.router.push({ name: 'login' })
@@ -24,10 +26,10 @@ class Api {
                             this.router.push({ name: 'not-found' })
                             break
                         case 502:
-                            this.router.push({name: 'bad-gateway'})
+                            this.router.push({ name: 'bad-gateway' })
                             break
                     }
-                    return new Response(null)
+                    return new Response()
                 },
             ],
         },

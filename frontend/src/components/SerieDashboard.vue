@@ -22,11 +22,11 @@
                     </div>
                     <a
                         :class="{ 'has-text-warning mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
-                        @click="addToFavorite($event, serie)"
+                        @click="addToFavorite($event)"
                     ></a>
                     <a
                         :class="{ 'has-text-primary mdi mdi-star-box': serie.wish_to_see, 'has-text-current mdi mdi-star-box-outline': !serie.wish_to_see }"
-                        @click="addtToWhishList($event, serie)"
+                        @click="addtToWhishList($event)"
                     ></a>
                 </div>
 
@@ -67,19 +67,19 @@
 </template>
 
 <script setup lang="ts">
-    import { onMounted, ref } from 'vue'
+    import { onMounted, ref, Ref } from 'vue'
     import { SerieService } from '@/services/'
     import Serie from '@/types/serie'
 
     const serieService = new SerieService()
     const shouldRender = ref(false)
     const shouldEdit = ref(false)
-    var serie: Serie
+    const serie: Ref<Partial<Serie>> = ref({})
 
     onMounted(async () => {
         serieService.get().then((response) => {
             shouldRender.value = true
-            serie = response as Serie
+            serie.value = response
         })
     })
 
@@ -92,7 +92,7 @@
     }
 
     async function updateSerie() {
-        serieService.updateSerie(serie).then(() => editSerie(false))
+        serieService.updateSerie(serie.value).then(() => editSerie(false))
     }
 
     function changeTitleAndElementColor(currentElement: Element | null, condition: boolean, className: string) {
@@ -103,19 +103,19 @@
         condition ? titleElement?.classList.add(className) : titleElement?.classList.remove(className)
     }
 
-    async function addToFavorite(event: Event, serie: Serie) {
-        serie.favorite = !serie.favorite
+    async function addToFavorite(event: Event) {
+        serie.value.favorite = !serie.value.favorite
         const currentElement = event?.target as Element
-        currentElement.className = `has-text-current mdi ${serie.favorite ? 'mdi-heart' : 'mdi-heart-outline'}`
-        changeTitleAndElementColor(currentElement, serie.favorite, 'has-text-warning')
+        currentElement.className = `has-text-current mdi ${serie.value.favorite ? 'mdi-heart' : 'mdi-heart-outline'}`
+        changeTitleAndElementColor(currentElement, serie.value.favorite, 'has-text-warning')
         updateSerie()
     }
 
-    async function addtToWhishList(event: Event, serie: Serie) {
-        serie.wish_to_see = !serie.wish_to_see
+    async function addtToWhishList(event: Event) {
+        serie.value.wish_to_see = !serie.value.wish_to_see
         const currentElement = event?.target as Element
-        currentElement.className = `has-text-current mdi ${serie.wish_to_see ? 'mdi-star-box' : 'mdi-star-box-outline'}`
-        changeTitleAndElementColor(currentElement, serie.wish_to_see, 'has-text-primary')
+        currentElement.className = `has-text-current mdi ${serie.value.wish_to_see ? 'mdi-star-box' : 'mdi-star-box-outline'}`
+        changeTitleAndElementColor(currentElement, serie.value.wish_to_see, 'has-text-primary')
         updateSerie()
     }
 
