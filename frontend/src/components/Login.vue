@@ -1,8 +1,7 @@
 <template>
     <section class="section"/>
     <div class="columns is-centered is-vcentered">
-        <span class="column is-one-fifth"></span>
-        <div class="column">
+        <div class="column is-three-quarters-fullhd is-four-fifths content">
             <div class="field">
                 <p class="control has-icons-left has-icons-right">
                     <input v-model="username" class="input" type="text" placeholder="Username" @keyup.enter="login" v-focus>
@@ -30,7 +29,6 @@
                 </p>
             </div>
         </div>
-        <span class="column is-one-fifth"></span>
     </div>
 </template>
 

@@ -6,7 +6,7 @@ class Api {
     private router = useRouter()
 
     public webApi = ky.create({
-        prefixUrl: process.env.VUE_APP_BACKEND_URL,
+        prefixUrl: import.meta.env.VITE_BACKEND_URL,
         hooks: {
             afterResponse: [
                 async (_request, _options, response) => {
