@@ -56,8 +56,5 @@ pub fn delete_serie(
     mut authenticated_request: AuthenticatedRequest,
     serie_id: i16,
 ) -> Result<usize, ServerError> {
-    serie_repository::delete_serie(
-        &mut authenticated_request.connection,
-        serie_id
-    )
+    serie_repository::delete_serie(&mut authenticated_request.connection, serie_id)
 }

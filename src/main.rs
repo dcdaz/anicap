@@ -1,5 +1,5 @@
 use actix_web::{middleware::Logger, web::Data, App, HttpServer};
-use env_logger::{Target, Builder};
+use env_logger::{Builder, Target};
 
 #[macro_use]
 extern crate diesel;
@@ -26,7 +26,6 @@ async fn main() -> std::io::Result<()> {
     let mut builder = Builder::from_default_env();
     builder.target(Target::Stdout);
     builder.init();
-
 
     // Run migrations if there's any new migration
     migrator::migrate();

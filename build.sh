@@ -12,9 +12,6 @@ SCRIPT_PATH=$(dirname "$0")
 # Delete Current compressed file
 [ -e $SCRIPT_PATH/deployment.tar.gz ] && rm -- $SCRIPT_PATH/deployment.tar.gz
 
-# Copy database
-cp -r $SCRIPT_PATH/database/ $SCRIPT_PATH/deployment/
-
 # Build backend and copy
 mkdir $SCRIPT_PATH/deployment/backend
 if [ -z $TARGET ]; then
@@ -26,6 +23,9 @@ else
     wait
     cp -r $SCRIPT_PATH/target/$TARGET/release/anicap $SCRIPT_PATH/deployment/backend/
 fi
+
+# Copy database stuff
+cp -r $SCRIPT_PATH/database/ $SCRIPT_PATH/deployment/backend
 
 # Build frontend and copy
 cd "$SCRIPT_PATH/frontend"
@@ -41,7 +41,6 @@ wait
 # Clean up deployment folder
 rm -r $SCRIPT_PATH/deployment/assets
 rm -r $SCRIPT_PATH/deployment/backend
-rm -r $SCRIPT_PATH/deployment/database
 rm -r $SCRIPT_PATH/deployment/icon.svg
 rm -r $SCRIPT_PATH/deployment/index.html
 

@@ -6,11 +6,13 @@
 # Small script that start, stop or restart Anicap backend
 
 ACTION="$1"
-SCRIPT_PATH=${0%/*}
-CURRENT_DATE=$(date +'%Y%m%d_%k%M%S')
+SCRIPT_PATH=$(dirname "$0")
+CURRENT_DATE=$(date +'%Y%m%d_%H%M%S')
 
 function start {
-    $SCRIPT_PATH/backend/anicap > $SCRIPT_PATH/anicap_backend_$CURRENT_DATE.log & echo $! > $SCRIPT_PATH/.pid_file
+    cd $SCRIPT_PATH/backend
+    ./anicap > ../log/anicap_backend_$CURRENT_DATE.log & echo $! > ../.pid_file
+    cd ..
 }
 
 function stop {

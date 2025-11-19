@@ -61,6 +61,15 @@ Build Anicap Backend with **debug** compatibility
 cargo build
 ```
 
+## Use Build script
+
+```bash
+sh build.sh
+```
+
+> You add targets to script like `aarch64-unknown-linux-gnu` and use it like `sh build.sh aarch64-unknown-linux-gnu`
+> Don't forget that you need to have libsqlite and gcc for cross compilation to **arm64**
+
 ## Endpoints
 
 This has a sample of the current endpoints and how they work
