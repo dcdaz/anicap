@@ -2,6 +2,8 @@ use serde::Deserialize;
 use utoipa::IntoParams;
 
 #[derive(Deserialize, IntoParams)]
+#[serde(rename_all="camelCase")]
+#[serde(default)]
 #[into_params(parameter_in = Query)]
 pub struct QueryParam {
     #[param(min_length = 1, max_length = 255, pattern = "[a-z]*")]

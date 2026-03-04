@@ -4,7 +4,6 @@ use crate::schema::serie;
 #[derive(Queryable)]
 pub struct Serie {
     pub id: i16,
-    // pub user_id: i16,
     pub name: String,
     pub season: i16,
     pub chapter: i16,

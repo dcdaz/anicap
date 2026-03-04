@@ -4,7 +4,7 @@
         <div class="column is-three-quarters-fullhd is-four-fifths content">
             <Header v-if="shouldRender" />
             <section class="section" v-else/>
-            <RouterView :key="$route.fullPath" />
+            <RouterView :key="route.fullPath" />
         </div>
     </div>
 </template>
@@ -18,15 +18,16 @@
 <script setup lang="ts">
     import Header from '@/components/Header.vue'
     import sessionStore from './stores/session-store'
-    import { useRouter } from 'vue-router'
+    import { useRoute, useRouter } from 'vue-router'
     import { ref, watch } from 'vue'
 
+    const route = useRoute()
     const router = useRouter()
     const session = sessionStore()
     const shouldRender = ref(false)
 
     function getRenderValue() {
-        if (session.token == null) {
+        if (session.accessToken == '') {
             shouldRender.value = false
             router.push({ name: 'login' })
         } else {

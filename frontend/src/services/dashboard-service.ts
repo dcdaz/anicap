@@ -117,10 +117,10 @@ class DashboardService {
 
     orderByWishList(event: Event, series: Serie[]) {
         const sortedSeries = series.sort((s1, s2) => {
-            if (s1.wish_to_see > s2.wish_to_see) {
+            if (s1.wishToSee > s2.wishToSee) {
                 return 1
             }
-            if (s1.wish_to_see < s2.wish_to_see) {
+            if (s1.wishToSee < s2.wishToSee) {
                 return -1
             }
             return 0

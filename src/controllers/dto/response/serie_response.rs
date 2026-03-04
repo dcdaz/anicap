@@ -3,6 +3,7 @@ use serde::Serialize;
 use utoipa::ToSchema;
 
 #[derive(ToSchema, Serialize)]
+#[serde(rename_all="camelCase")]
 pub struct SerieResponse {
     pub id: i16,
     pub name: String,

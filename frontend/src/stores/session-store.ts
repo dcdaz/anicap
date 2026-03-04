@@ -1,16 +1,14 @@
 import { defineStore } from "pinia"
 import router from "@/router/router"
 import Api from "@/utils/api"
+import AppUserToken from "@/types/app-user-token"
 
 const sessionStore = defineStore(
     'sessionStore',
     {
-        state: () => {
-            return {
-                token: null
-            }
-        },
-        persist: true,
+        state: () => ({
+            accessToken: '',
+        }),
         actions: {
             async login(username: string, password: string) {
                 const loginRequest = {
@@ -24,8 +22,8 @@ const sessionStore = defineStore(
                         json: loginRequest,
                         credentials: 'include'
                     }
-                ).json()
-                .then((response: any) => this.token = response.access_token)
+                ).json<AppUserToken>()
+                .then(response => this.accessToken = response.accessToken)
                 router.push({ name: 'home' })
             },
             async logout() {
@@ -35,10 +33,11 @@ const sessionStore = defineStore(
                         credentials: 'include'
                     }
                 )
-                .then(() => this.token = null)
+                .then(() => this.accessToken = '')
                 router.push({ name: 'login' })
             }
-        }
+        },
+        persist: true,
     }
 )
 

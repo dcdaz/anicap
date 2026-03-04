@@ -15,7 +15,7 @@
                         <p
                             id="serie-title"
                             class="title is-4"
-                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
                         >
                             {{ serie.name }}
                         </p>
@@ -25,7 +25,7 @@
                         @click="addToFavorite($event)"
                     ></a>
                     <a
-                        :class="{ 'has-text-primary mdi mdi-star-box': serie.wish_to_see, 'has-text-current mdi mdi-star-box-outline': !serie.wish_to_see }"
+                        :class="{ 'has-text-primary mdi mdi-star-box': serie.wishToSee, 'has-text-current mdi mdi-star-box-outline': !serie.wishToSee }"
                         @click="addtToWhishList($event)"
                     ></a>
                 </div>
@@ -74,10 +74,18 @@
     const serieService = new SerieService()
     const shouldRender = ref(false)
     const shouldEdit = ref(false)
-    const serie: Ref<Partial<Serie>> = ref({})
+    const serie: Ref<Serie> = ref<Serie>({
+        id: 0,
+        name: '',
+        season: 0,
+        chapter: 0,
+        score: 0.0,
+        favorite: false,
+        wishToSee: false
+    })
 
     onMounted(async () => {
-        serieService.get().then((response) => {
+        serieService.get().then(response => {
             shouldRender.value = true
             serie.value = response
         })
@@ -112,10 +120,10 @@
     }
 
     async function addtToWhishList(event: Event) {
-        serie.value.wish_to_see = !serie.value.wish_to_see
+        serie.value.wishToSee = !serie.value.wishToSee
         const currentElement = event?.target as Element
-        currentElement.className = `has-text-current mdi ${serie.value.wish_to_see ? 'mdi-star-box' : 'mdi-star-box-outline'}`
-        changeTitleAndElementColor(currentElement, serie.value.wish_to_see, 'has-text-primary')
+        currentElement.className = `has-text-current mdi ${serie.value.wishToSee ? 'mdi-star-box' : 'mdi-star-box-outline'}`
+        changeTitleAndElementColor(currentElement, serie.value.wishToSee, 'has-text-primary')
         updateSerie()
     }
 

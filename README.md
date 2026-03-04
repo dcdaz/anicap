@@ -140,10 +140,13 @@ Body
 
 ```json
 {
-	"name": "The Outpost",
-	"season": 2,
-	"chapter": 1,
-	"score": 8.0
+  "name": "The Outpost",
+  "season": 2,
+  "chapter": 1,
+  "score": 8.0,
+  "score": 5.1,
+  "favorite": false,
+  "wishToSee": false
 }
 ```
 
@@ -163,11 +166,12 @@ Response
 [
   {
     "id": 1,
-    "user_id": 1,
     "name": "The Outpost",
     "season": 2,
     "chapter": 0,
-    "score": 8.0
+    "score": 8.0,
+    "favorite": false,
+    "wishToSee": false
   }
 ]
 ```
@@ -191,7 +195,9 @@ Response
   "name": "The Outpost",
   "season": 2,
   "chapter": 0,
-  "score": 8.0
+  "score": 8.0,
+  "favorite": false,
+  "wishToSee": false
 }
 ```
 
@@ -209,9 +215,11 @@ Body
 
 ```json
 {
-	"name": "The Outpost",
-	"season": 2,
-	"chapter": 2,
-	"score": 8.5
+  "name": "The Outpost",
+  "season": 2,
+  "chapter": 2,
+  "score": 8.5,
+  "favorite": false,
+  "wishToSee": false
 }
 ```
