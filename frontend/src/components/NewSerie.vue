@@ -49,10 +49,13 @@
     import SerieRequest from '@/types/serie-request'
 
     const serieService = new SerieService()
-    var serie: Partial<SerieRequest> = {
+    var serie: SerieRequest = {
         name: '',
+        season: 0,
+        chapter: 0,
+        score: 0,
         favorite: false,
-        wish_to_see: false,
+        wishToSee: false,
     }
 
     async function addSerie(wishToSee: boolean) {
@@ -64,7 +67,7 @@
                     chapter: 0,
                     score: 0,
                     favorite: false,
-                    wish_to_see: true,
+                    wishToSee: true,
                 }
             ) : serieService.addSerie(serie)
         } else {

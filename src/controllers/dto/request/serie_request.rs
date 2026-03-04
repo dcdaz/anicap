@@ -4,6 +4,7 @@ use validator::Validate;
 use utoipa::ToSchema;
 
 #[derive(Validate, Deserialize, ToSchema)]
+#[serde(rename_all="camelCase")]
 #[serde(default)]
 pub struct SerieRequest {
     #[validate(length(min = 1, max = 255, code = "too_long", message = "Name is too long"))]

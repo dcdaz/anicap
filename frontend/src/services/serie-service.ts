@@ -17,7 +17,7 @@ class SerieService {
         ).json<Serie>()
     }
 
-    async addSerie(request: Partial<SerieRequest>) {
+    async addSerie(request: SerieRequest) {
         await this.webApi.post(
             'serie',
             {
@@ -27,7 +27,7 @@ class SerieService {
         )
     }
 
-    async updateSerie(request: Partial<SerieRequest>, serieId: number | null = null) {
+    async updateSerie(request: SerieRequest, serieId: number | null = null) {
         const validSerieId = serieId != null ? serieId : this.route.params.serieId
         await this.webApi.put(
             `serie/${validSerieId}`,

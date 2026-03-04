@@ -48,13 +48,10 @@ pub async fn insert_serie(
 #[get("/serie")]
 pub async fn search_series(
     authenticated_request: AuthenticatedRequest,
-    query_param: Option<web::Query<QueryParam>>,
+    // query_param: actix_web::Result<web::Query<QueryParam>, actix_web::error::Error>,
+    web::Query(query_param): web::Query<QueryParam>,
 ) -> ServerResponse {
-    let params = match query_param {
-        Some(param) => param.0,
-        None => QueryParam::default()
-    };
-    serie_service::search_series(authenticated_request, params)
+    serie_service::search_series(authenticated_request, query_param)
         .map(|series| HttpResponse::Ok().json(series))
 }
 

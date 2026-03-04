@@ -5,7 +5,7 @@ type Serie = {
     chapter: number,
     score: number,
     favorite: boolean,
-    wish_to_see: boolean,
+    wishToSee: boolean,
 }
 
 export default Serie

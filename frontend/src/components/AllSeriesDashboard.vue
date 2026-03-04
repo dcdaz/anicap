@@ -1,5 +1,5 @@
 <template>
-    <div v-show="shouldRender">
+    <div v-if="shouldRender">
         <div class="columns is-vcentered">
             <span class="column is-centered is-1">Search:</span>
             <input id="search-serie-input" class="input column is-one-third-fullhd is-one-quarter is-small" type="text" v-model="serieNameParam" @keyup="searchSeries" placeholder="Type here to search"/>
@@ -20,36 +20,36 @@
                 </thead>
                 <tbody>
                     <tr v-for="serie in series" :key="serie.id">
-                        <td :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }">
+                        <td :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }">
                             <router-link :to="`/serie-dashboard/${serie.id}`" class="has-text-current">{{ serie.name }}</router-link>
                         </td>
                         <td
                             class="has-text-centered"
-                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
                         >
                             {{ serie.season }}
                         </td>
                         <td
                             class="has-text-centered"
-                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
                         >
                             {{ serie.chapter }}
                         </td>
                         <td
                             class="has-text-centered"
-                            :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }"
+                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
                         >
                             {{ serie.score }}
                         </td>
-                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }">
+                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }">
                             <a
                                 :class="{ 'has-text-warning mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
                                 @click="addToFavorite($event, serie)"
                             ></a>
                         </td>
-                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wish_to_see, 'has-text-warning': serie.favorite }">
+                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }">
                             <a
-                                :class="{ 'has-text-primary mdi mdi-star-box': serie.wish_to_see, 'has-text-current mdi mdi-star-box-outline': !serie.wish_to_see }"
+                                :class="{ 'has-text-primary mdi mdi-star-box': serie.wishToSee, 'has-text-current mdi mdi-star-box-outline': !serie.wishToSee }"
                                 @click="addtToWhishList($event, serie)"
                             ></a>
                         </td>
@@ -58,6 +58,7 @@
             </table>
         </div>
     </div>
+    <p v-else class="has-text-centered">No data</p>
 </template>
 
 <script setup lang="ts">
@@ -73,7 +74,7 @@
     const series: Ref<Serie[]> = ref([])
 
     onMounted(async () => {
-        dashboardService.searchAllSeries().then((response) => {
+        dashboardService.searchAllSeries().then(response => {
             shouldRender.value = true
             series.value = response
         })
@@ -95,9 +96,9 @@
         const name = serieNameParam.value
         if (name.length > 2) {
             queryParams.name = name
-            dashboardService.searchSeries(queryParams).then((response) => series.value = response)
+            dashboardService.searchSeries(queryParams).then(response => series.value = response)
         } else {
-            dashboardService.searchAllSeries().then((response) => series.value = response)
+            dashboardService.searchAllSeries().then(response => series.value = response)
         }
     }
 
@@ -110,10 +111,10 @@
     }
 
     async function addtToWhishList(event: Event, serie: Serie) {
-        serie.wish_to_see = !serie.wish_to_see
+        serie.wishToSee = !serie.wishToSee
         const currentElement = event?.target as Element
-        currentElement.className = `has-text-current mdi ${serie.wish_to_see ? 'mdi-star-box' : 'mdi-star-box-outline'}`;
-        changeRowColor(currentElement, serie.wish_to_see, 'has-text-primary')
+        currentElement.className = `has-text-current mdi ${serie.wishToSee ? 'mdi-star-box' : 'mdi-star-box-outline'}`;
+        changeRowColor(currentElement, serie.wishToSee, 'has-text-primary')
         serieService.updateSerie(serie, serie.id)
     }
 
