@@ -16,18 +16,18 @@ input[type=number] {
 }
 
 :root {
-  --bulma-info-h: 179deg;
-  --bulma-info-s: 25%;
-  --bulma-info-l: 65%;
-  --bulma-primary-h: 14deg;
-  --bulma-primary-s: 51%;
-  --bulma-primary-l: 63%;
-  --bulma-success-h: 92deg;
-  --bulma-success-s: 28%;
-  --bulma-success-l: 65%;
-  --bulma-warning-h: 354deg;
+  --bulma-primary-s: 42%;
+  --bulma-primary-l: 60%;
+  --bulma-link-s: 42%;
+  --bulma-link-l: 60%;
+  --bulma-info-s: 42%;
+  --bulma-info-l: 60%;
+  --bulma-success-s: 42%;
+  --bulma-success-l: 60%;
   --bulma-warning-s: 42%;
-  --bulma-warning-l: 56%;
+  --bulma-warning-l: 60%;
+  --bulma-danger-s: 42%;
+  --bulma-danger-l: 60%;
 }
 
 [data-theme=light],

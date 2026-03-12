@@ -12,6 +12,7 @@ pub struct SerieResponse {
     pub score: f32,
     pub favorite: bool,
     pub wish_to_see: bool,
+    pub watch_status: i16
 }
 
 impl SerieResponse {
@@ -24,6 +25,7 @@ impl SerieResponse {
             score: serie.score,
             favorite: serie.favorite,
             wish_to_see: serie.wish_to_see,
+            watch_status: serie.watch_status,
         }
     }
 

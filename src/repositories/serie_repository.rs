@@ -5,7 +5,7 @@ use crate::schema::serie::dsl::*;
 use crate::utils::{DBType, ServerError, SqlConnection};
 use diesel::sql_types::Bool;
 use diesel::{
-    delete, insert_into, update, BoolExpressionMethods, BoxableExpression, ExpressionMethods, QueryDsl, RunQueryDsl, TextExpressionMethods
+    BoolExpressionMethods, BoxableExpression, ExpressionMethods, QueryDsl, RunQueryDsl, SelectableHelper, TextExpressionMethods, delete, insert_into, update
 };
 
 type BoxablePredicate = Box<dyn BoxableExpression<serie::table, DBType, SqlType = Bool>>;
@@ -50,6 +50,10 @@ fn build_filter(
         filter = Box::new(filter.and(wish_to_see.eq(query_param.wish_to_see.unwrap())))
     }
 
+    if query_param.watch_status.is_some() {
+        filter = Box::new(filter.and(watch_status.eq(query_param.watch_status.unwrap())))
+    }
+
     filter
 }
 
@@ -60,15 +64,7 @@ pub fn search_series(
 ) -> Result<Vec<Serie>, ServerError> {
     serie
         .filter(build_filter(logged_user_id, query_param))
-        .select((
-            serie::id,
-            serie::name,
-            serie::season,
-            serie::chapter,
-            serie::score,
-            serie::favorite,
-            serie::wish_to_see,
-        ))
+        .select(Serie::as_select())
         .load::<Serie>(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
 }
@@ -80,15 +76,7 @@ pub fn get_serie_by_id(
 ) -> Result<Serie, ServerError> {
     serie
         .filter(user_id.eq(logged_user_id).and(id.eq(serie_id)))
-        .select((
-            serie::id,
-            serie::name,
-            serie::season,
-            serie::chapter,
-            serie::score,
-            serie::favorite,
-            serie::wish_to_see,
-        ))
+        .select(Serie::as_select())
         .first::<Serie>(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
 }
@@ -99,14 +87,7 @@ pub fn update_serie(
     updated_serie: NewSerie,
 ) -> Result<usize, ServerError> {
     update(serie.filter(id.eq(serie_id)))
-        .set((
-            name.eq(updated_serie.name),
-            season.eq(updated_serie.season),
-            chapter.eq(updated_serie.chapter),
-            score.eq(updated_serie.score),
-            favorite.eq(updated_serie.favorite),
-            wish_to_see.eq(updated_serie.wish_to_see),
-        ))
+        .set(updated_serie)
         .execute(connection)
         .map_err(|error| ServerError::ObjectNotFound(error.to_string()))
 }

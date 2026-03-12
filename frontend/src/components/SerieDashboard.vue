@@ -12,20 +12,16 @@
                         </figure>
                     </div>
                     <div class="media-content">
-                        <p
-                            id="serie-title"
-                            class="title is-4"
-                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
-                        >
+                        <p id="serie-title" class="title is-4 has-text-primary">
                             {{ serie.name }}
                         </p>
                     </div>
                     <a
-                        :class="{ 'has-text-warning mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
+                        :class="{ 'has-text-danger mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
                         @click="addToFavorite($event)"
                     ></a>
                     <a
-                        :class="{ 'has-text-primary mdi mdi-star-box': serie.wishToSee, 'has-text-current mdi mdi-star-box-outline': !serie.wishToSee }"
+                        :class="{ 'has-text-warning mdi mdi-star-box': serie.wishToSee, 'has-text-current mdi mdi-star-box-outline': !serie.wishToSee }"
                         @click="addtToWhishList($event)"
                     ></a>
                 </div>
@@ -37,6 +33,7 @@
                                 <th>Season</th>
                                 <th>Chapter</th>
                                 <th>Score</th>
+                                <th>Watch Status</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -44,6 +41,15 @@
                                 <td><input class="input editable is-small has-text-centered" type="number" v-model="serie.season" disabled /></td>
                                 <td><input class="input editable is-small has-text-centered" type="number" v-model="serie.chapter" disabled /></td>
                                 <td><input class="input editable is-small has-text-centered" type="number" v-model="serie.score" disabled /></td>
+                                <td class="has-text-centered">
+                                    <div class="select is-small">
+                                        <select class="editable" v-model="serie.watchStatus" disabled>
+                                            <option :value="0">{{ WatchStatus.NOT_WATCHING }}</option>
+                                            <option :value="1">{{ WatchStatus.WATCHING }}</option>
+                                            <option :value="2">{{ WatchStatus.WATCHED }}</option>
+                                        </select>
+                                    </div>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -70,6 +76,7 @@
     import { onMounted, ref, Ref } from 'vue'
     import { SerieService } from '@/services/'
     import Serie from '@/types/serie'
+    import WatchStatus from '@/types/status'
 
     const serieService = new SerieService()
     const shouldRender = ref(false)
@@ -81,7 +88,8 @@
         chapter: 0,
         score: 0.0,
         favorite: false,
-        wishToSee: false
+        wishToSee: false,
+        watchStatus: 0,
     })
 
     onMounted(async () => {
@@ -115,7 +123,7 @@
         serie.value.favorite = !serie.value.favorite
         const currentElement = event?.target as Element
         currentElement.className = `has-text-current mdi ${serie.value.favorite ? 'mdi-heart' : 'mdi-heart-outline'}`
-        changeTitleAndElementColor(currentElement, serie.value.favorite, 'has-text-warning')
+        changeTitleAndElementColor(currentElement, serie.value.favorite, 'has-text-danger')
         updateSerie()
     }
 
@@ -123,7 +131,7 @@
         serie.value.wishToSee = !serie.value.wishToSee
         const currentElement = event?.target as Element
         currentElement.className = `has-text-current mdi ${serie.value.wishToSee ? 'mdi-star-box' : 'mdi-star-box-outline'}`
-        changeTitleAndElementColor(currentElement, serie.value.wishToSee, 'has-text-primary')
+        changeTitleAndElementColor(currentElement, serie.value.wishToSee, 'has-text-warning')
         updateSerie()
     }
 
