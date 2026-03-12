@@ -24,6 +24,7 @@
                             <th>Season</th>
                             <th>Chapter</th>
                             <th>Score</th>
+                            <th>Watch Status</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -31,6 +32,15 @@
                             <td><input class="input is-small has-text-centered" type="number" v-model="serie.season" /></td>
                             <td><input class="input is-small has-text-centered" type="number" v-model="serie.chapter" /></td>
                             <td><input class="input is-small has-text-centered" type="number" v-model="serie.score" /></td>
+                            <td class="has-text-centered">
+                                <div class="select is-small">
+                                    <select v-model="serie.watchStatus">
+                                        <option :value="0">{{ WatchStatus.NOT_WATCHING }}</option>
+                                        <option :value="1">{{ WatchStatus.WATCHING }}</option>
+                                        <option :value="2">{{ WatchStatus.WATCHED }}</option>
+                                    </select>
+                                </div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
@@ -47,6 +57,7 @@
 <script setup lang="ts">
     import { SerieService } from '@/services/'
     import SerieRequest from '@/types/serie-request'
+    import WatchStatus from '@/types/status'
 
     const serieService = new SerieService()
     var serie: SerieRequest = {
@@ -56,20 +67,13 @@
         score: 0,
         favorite: false,
         wishToSee: false,
+        watchStatus: 0,
     }
 
     async function addSerie(wishToSee: boolean) {
         if (serie.name != '') {
-            wishToSee ? serieService.addSerie(
-                {
-                    name: serie.name!,
-                    season: 0,
-                    chapter: 0,
-                    score: 0,
-                    favorite: false,
-                    wishToSee: true,
-                }
-            ) : serieService.addSerie(serie)
+            serie.wishToSee = wishToSee
+            serieService.addSerie(serie)
         } else {
             document.getElementById('new-serie-name')?.focus()
         }

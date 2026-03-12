@@ -25,7 +25,7 @@ class DashboardService {
         ).json<Serie[]>()
     }
 
-    orderSeries(event: Event, series: Serie[]) {
+    private orderSeries(event: Event, series: Serie[]) {
         const currentElement = (event.currentTarget as Element)
         const currentClass = (currentElement.attributes as NamedNodeMap)[0].value
         if (currentClass.includes('mdi-menu-swap')) {
@@ -50,77 +50,12 @@ class DashboardService {
         }
     }
 
-    orderByName(event: Event, series: Serie[]) {
+    orderBy<T extends keyof Serie>(event: Event, series: Serie[], prop: T) {
         const sortedSeries = series.sort((s1, s2) => {
-            if (s1.name > s2.name) {
+            if (s1[prop] > s2[prop]) {
                 return 1
             }
-            if (s1.name < s2.name) {
-                return -1
-            }
-            return 0
-        })
-        this.orderSeries(event, sortedSeries)
-    }
-
-    orderBySeason(event: Event, series: Serie[]) {
-        const sortedSeries = series.sort((s1, s2) => {
-            if (s1.season > s2.season) {
-                return 1
-            }
-            if (s1.season < s2.season) {
-                return -1
-            }
-            return 0
-        })
-        this.orderSeries(event, sortedSeries)
-    }
-
-    orderByChapter(event: Event, series: Serie[]) {
-        const sortedSeries = series.sort((s1, s2) => {
-            if (s1.chapter > s2.chapter) {
-                return 1
-            }
-            if (s1.chapter < s2.chapter) {
-                return -1
-            }
-            return 0
-        })
-        this.orderSeries(event, sortedSeries)
-    }
-
-    orderByScore(event: Event, series: Serie[]) {
-        const sortedSeries = series.sort((s1, s2) => {
-            if (s1.score > s2.score) {
-                return 1
-            }
-            if (s1.score < s2.score) {
-                return -1
-            }
-            return 0
-        })
-        this.orderSeries(event, sortedSeries)
-    }
-
-    orderByFavorite(event: Event, series: Serie[]) {
-        const sortedSeries = series.sort((s1, s2) => {
-            if (s1.favorite > s2.favorite) {
-                return 1
-            }
-            if (s1.favorite < s2.favorite) {
-                return -1
-            }
-            return 0
-        })
-        this.orderSeries(event, sortedSeries)
-    }
-
-    orderByWishList(event: Event, series: Serie[]) {
-        const sortedSeries = series.sort((s1, s2) => {
-            if (s1.wishToSee > s2.wishToSee) {
-                return 1
-            }
-            if (s1.wishToSee < s2.wishToSee) {
+            if (s1[prop] < s2[prop]) {
                 return -1
             }
             return 0

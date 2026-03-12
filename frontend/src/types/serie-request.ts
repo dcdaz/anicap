@@ -5,6 +5,7 @@ type SerieRequest = {
     score: number,
     favorite: boolean,
     wishToSee: boolean,
+    watchStatus: number
 }
 
 export default SerieRequest

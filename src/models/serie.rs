@@ -1,7 +1,8 @@
 use crate::controllers::SerieRequest;
 use crate::schema::serie;
 
-#[derive(Queryable)]
+#[derive(Queryable, Selectable)]
+#[diesel(table_name = serie)]
 pub struct Serie {
     pub id: i16,
     pub name: String,
@@ -10,9 +11,10 @@ pub struct Serie {
     pub score: f32,
     pub favorite: bool,
     pub wish_to_see: bool,
+    pub watch_status: i16,
 }
 
-#[derive(Insertable)]
+#[derive(Insertable, AsChangeset)]
 #[diesel(table_name = serie)]
 pub struct NewSerie {
     pub user_id: i16,
@@ -22,6 +24,7 @@ pub struct NewSerie {
     pub score: f32,
     pub favorite: bool,
     pub wish_to_see: bool,
+    pub watch_status: i16,
 }
 
 impl NewSerie {
@@ -33,7 +36,8 @@ impl NewSerie {
             chapter: request.chapter,
             score: request.score,
             favorite: request.favorite,
-            wish_to_see: request.wish_to_see
+            wish_to_see: request.wish_to_see,
+            watch_status: request.watch_status,
         }
     }
 }

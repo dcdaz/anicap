@@ -17,6 +17,8 @@ pub struct QueryParam {
     pub score: Option<f32>,
     pub favorite: Option<bool>,
     pub wish_to_see: Option<bool>,
+    #[param(minimum = 0, maximum = 2)]
+    pub watch_status: Option<i16>,
 }
 
 impl Default for QueryParam {
@@ -27,7 +29,8 @@ impl Default for QueryParam {
             chapter: None,
             score: None,
             favorite: None,
-            wish_to_see: None
+            wish_to_see: None,
+            watch_status: None,
         }
     }
 }

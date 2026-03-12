@@ -12,11 +12,11 @@ class Api {
                 async (_request, _options, response) => {
                     switch (response.status) {
                         case 200:
-                            return
+                            break
                         case 201:
                         case 204:
-                            if (!response.url.includes('logout')) {
-                                this.router.push({ name: 'home'})
+                            if (response.url.includes('logout')) {
+                                this.router.push('login')
                             }
                             break
                         case 401:
@@ -29,7 +29,7 @@ class Api {
                             this.router.push({ name: 'bad-gateway' })
                             break
                     }
-                    return new Response()
+                    return response
                 },
             ],
         },

@@ -24,6 +24,7 @@ table! {
         score -> Float,
         favorite -> Bool,
         wish_to_see -> Bool,
+        watch_status -> SmallInt,
     }
 }
 
@@ -33,6 +34,6 @@ table! {
     migration(id) {
         id -> SmallInt,
         migration_name -> VarChar,
-        migrated_at -> Timestamp
+        migrated_at -> Timestamp,
     }
 }

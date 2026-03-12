@@ -6,6 +6,7 @@ type Serie = {
     score: number,
     favorite: boolean,
     wishToSee: boolean,
+    watchStatus: number,
 }
 
 export default Serie

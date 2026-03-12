@@ -18,6 +18,8 @@ pub struct SerieRequest {
     pub score: f32,
     pub favorite: bool,
     pub wish_to_see: bool,
+    #[validate(range(min = 0, max = 2, code = "invalid_value", message = "Watch Status must be 0, 1 or 2"))]
+    pub watch_status: i16,
 }
 
 impl Default for SerieRequest {
@@ -29,6 +31,7 @@ impl Default for SerieRequest {
             score: 0.0,
             favorite: false,
             wish_to_see: false,
+            watch_status: 0,
         }
     }
 }

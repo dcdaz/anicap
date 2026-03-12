@@ -10,47 +10,45 @@
             <table class="table is-fullwidth is-striped">
                 <thead>
                     <tr>
-                        <th>Name<button class="mdi mdi-menu-swap" @click="dashboardService.orderByName($event, series)"/></th>
-                        <th class="has-text-centered">Season<button class="mdi mdi-menu-swap" @click="dashboardService.orderBySeason($event, series)"/></th>
-                        <th class="has-text-centered">Chapter<button class="mdi mdi-menu-swap" @click="dashboardService.orderByChapter($event, series)"/></th>
-                        <th class="has-text-centered">Score<button class="mdi mdi-menu-swap" @click="dashboardService.orderByScore($event, series)"/></th>
-                        <th class="has-text-centered">Favorite<button class="mdi mdi-menu-swap" @click="dashboardService.orderByFavorite($event, series)"/></th>
-                        <th class="has-text-centered">Whish to see<button class="mdi mdi-menu-swap" @click="dashboardService.orderByWishList($event, series)"/></th>
+                        <th>Name<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'name')"/></th>
+                        <th class="has-text-centered">Season<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'season')"/></th>
+                        <th class="has-text-centered">Chapter<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'chapter')"/></th>
+                        <th class="has-text-centered">Score<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'score')"/></th>
+                        <th class="has-text-centered">Watch Status<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'watchStatus')"/></th>
+                        <th class="has-text-centered">Favorite<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'favorite')"/></th>
+                        <th class="has-text-centered">Whish to see<button class="mdi mdi-menu-swap" @click="dashboardService.orderBy($event, series, 'wishToSee')"/></th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="serie in series" :key="serie.id">
-                        <td :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }">
+                        <td>
                             <router-link :to="`/serie-dashboard/${serie.id}`" class="has-text-current">{{ serie.name }}</router-link>
                         </td>
-                        <td
-                            class="has-text-centered"
-                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
-                        >
+                        <td class="has-text-centered">
                             {{ serie.season }}
                         </td>
-                        <td
-                            class="has-text-centered"
-                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
-                        >
+                        <td class="has-text-centered">
                             {{ serie.chapter }}
                         </td>
-                        <td
-                            class="has-text-centered"
-                            :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }"
-                        >
+                        <td class="has-text-centered">
                             {{ serie.score }}
                         </td>
-                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }">
+                        <td
+                            class="has-text-centered"
+                            :class="{ 'has-text-info': serie.watchStatus === 1, 'has-text-success': serie.watchStatus === 2 }"
+                        >
+                            {{ Object.values(WatchStatus)[serie.watchStatus] }}
+                        </td>
+                        <td class="has-text-centered" :class="{ 'has-text-danger': serie.favorite }">
                             <a
-                                :class="{ 'has-text-warning mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
+                                :class="{ 'has-text-danger mdi mdi-heart': serie.favorite, 'has-text-current mdi mdi-heart-outline': !serie.favorite }"
                                 @click="addToFavorite($event, serie)"
                             ></a>
                         </td>
-                        <td class="has-text-centered" :class="{ 'has-text-primary': serie.wishToSee, 'has-text-warning': serie.favorite }">
+                        <td class="has-text-centered" :class="{ 'has-text-warning': serie.wishToSee }">
                             <a
-                                :class="{ 'has-text-primary mdi mdi-star-box': serie.wishToSee, 'has-text-current mdi mdi-star-box-outline': !serie.wishToSee }"
-                                @click="addtToWhishList($event, serie)"
+                                :class="{ 'has-text-warning mdi mdi-star-box': serie.wishToSee, 'has-text-current mdi mdi-star-box-outline': !serie.wishToSee }"
+                                @click="addToWhishList($event, serie)"
                             ></a>
                         </td>
                     </tr>
@@ -65,6 +63,7 @@
     import { onMounted, Ref, ref } from 'vue'
     import Serie from '@/types/serie'
     import SerieRequest from '@/types/serie-request'
+    import WatchStatus from '@/types/status'
     import { DashboardService, SerieService } from '@/services/'
 
     const dashboardService = new DashboardService()
@@ -106,22 +105,19 @@
         serie.favorite = !serie.favorite
         const currentElement = event?.target as Element
         currentElement.className = `has-text-current mdi ${serie.favorite ? 'mdi-heart' : 'mdi-heart-outline'}`
-        changeRowColor(currentElement, serie.favorite, 'has-text-warning')
+        changeElementColor(currentElement, serie.favorite, 'has-text-danger')
         serieService.updateSerie(serie, serie.id)
     }
 
-    async function addtToWhishList(event: Event, serie: Serie) {
+    async function addToWhishList(event: Event, serie: Serie) {
         serie.wishToSee = !serie.wishToSee
         const currentElement = event?.target as Element
         currentElement.className = `has-text-current mdi ${serie.wishToSee ? 'mdi-star-box' : 'mdi-star-box-outline'}`;
-        changeRowColor(currentElement, serie.wishToSee, 'has-text-primary')
+        changeElementColor(currentElement, serie.wishToSee, 'has-text-warning')
         serieService.updateSerie(serie, serie.id)
     }
 
-    function changeRowColor(currentElement: Element | null, condition: boolean, className: string) {
-        const wholeRow = (currentElement?.parentElement?.parentElement as Element).children
-        for (let i = 0; i < wholeRow.length; i++) {
-            condition ? wholeRow[i].classList.add(className) : wholeRow[i].classList.remove(className)
-        }
+    function changeElementColor(currentElement: Element | null, condition: boolean, className: string) {
+        condition ? currentElement?.classList.add(className) : currentElement?.classList.remove(className)
     }
 </script>
