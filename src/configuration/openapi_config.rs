@@ -14,6 +14,12 @@ use utoipa::{
         crate::controllers::get_serie_by_id,
         crate::controllers::update_serie,
         crate::controllers::delete_serie,
+        crate::controllers::insert_serie_genre,
+        crate::controllers::search_serie_genres,
+        crate::controllers::delete_serie_genre,
+        crate::controllers::insert_serie_type,
+        crate::controllers::search_serie_types,
+        crate::controllers::delete_serie_type,
     ),
     modifiers(&SecurityAddon)
 )]

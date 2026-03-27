@@ -28,8 +28,12 @@ pub async fn register(
     request: web::Json<AppUserRequest>,
 ) -> ServerResponse {
     let connection = pool_handler(Some(&pool));
-    app_user_service::register(&mut connection.unwrap(), request.into_inner())
-        .map(|_| HttpResponse::Created().finish())
+    let request = request.into_inner();
+    request.validate_request();
+    app_user_service::register(
+        &mut connection.unwrap(),
+        request
+    ).map(|_| HttpResponse::Created().finish())
 }
 
 #[utoipa::path(
@@ -52,7 +56,9 @@ pub async fn login(
     request: web::Json<LoginAppUserRequest>,
 ) -> ServerResponse {
     let connection = pool_handler(Some(&pool));
-    app_user_service::login(&mut connection.unwrap(), request.into_inner())
+    let request = request.into_inner();
+    request.validate_request();
+    app_user_service::login(&mut connection.unwrap(), request)
         .map(|token| {
             let cookie = Cookie::build("token", token.clone().access_token)
                 .path("/")

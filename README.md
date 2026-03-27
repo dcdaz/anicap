@@ -45,6 +45,11 @@ token:
 
 You can find a sample version called `anicap-sample.yml` in this repo.
 
+> Notes: Each migration added should be done statement per file, becuase diesel relies on prepare statements and not in batch statements
+> which ends up on being ignored all statements after the first one if you put them in the same file
+
+> Notes: If you decided to use other DB, please create the proper migration files.
+
 ## Run
 
 Run Anicap Backend
@@ -237,3 +242,5 @@ Body
 - [x] Add status (To watch, watching, watched), maybe colors on general dashboard.
 - [ ] Add pie report to show series by genre and/or type
 - [ ] Add ability to show/hide columns on dashboard
+- [ ] Add a way to migrate multiple statements at once if applicable
+- [ ] Add a way to run schema and migrations for other databases

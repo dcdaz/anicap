@@ -29,8 +29,12 @@ pub async fn insert_serie(
     authenticated_request: AuthenticatedRequest,
     request: web::Json<SerieRequest>,
 ) -> ServerResponse {
-    serie_service::add_new_serie(authenticated_request, request.into_inner())
-        .map(|_| HttpResponse::Created().finish())
+    let request = request.into_inner();
+    request.validate_request();
+    serie_service::add_new_serie(
+        authenticated_request,
+        request
+    ).map(|_| HttpResponse::Created().finish())
 }
 
 #[utoipa::path(
@@ -98,13 +102,15 @@ pub async fn get_serie_by_id(
 #[put("/serie/{serie_id}")]
 pub async fn update_serie(
     authenticated_request: AuthenticatedRequest,
-    serie_id: web::Path<(i16,)>,
+    serie_id: web::Path<i16>,
     request: web::Json<SerieRequest>,
 ) -> ServerResponse {
+    let request = request.into_inner();
+    request.validate_request();
     serie_service::update_serie(
         authenticated_request,
-        serie_id.into_inner().0,
-        request.into_inner(),
+        serie_id.into_inner(),
+        request,
     )
     .map(|_| HttpResponse::NoContent().finish())
 }
@@ -124,11 +130,11 @@ pub async fn update_serie(
 #[delete("/serie/{serie_id}")]
 pub async fn delete_serie(
     authenticated_request: AuthenticatedRequest,
-    serie_id: web::Path<(i16,)>,
+    serie_id: web::Path<i16>,
 ) -> ServerResponse {
     serie_service::delete_serie(
         authenticated_request,
-        serie_id.into_inner().0
+        serie_id.into_inner()
     )
     .map(|_| HttpResponse::NoContent().finish())
 }

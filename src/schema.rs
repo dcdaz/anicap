@@ -37,3 +37,19 @@ table! {
         migrated_at -> Timestamp,
     }
 }
+
+table! {
+    serie_genre(id) {
+        id -> SmallInt,
+        user_id -> SmallInt,
+        name -> VarChar
+    }
+}
+
+table! {
+    serie_type(id) {
+        id -> SmallInt,
+        user_id -> SmallInt,
+        name -> VarChar
+    }
+}

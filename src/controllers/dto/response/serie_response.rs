@@ -12,7 +12,7 @@ pub struct SerieResponse {
     pub score: f32,
     pub favorite: bool,
     pub wish_to_see: bool,
-    pub watch_status: i16
+    pub watch_status: i16,
 }
 
 impl SerieResponse {

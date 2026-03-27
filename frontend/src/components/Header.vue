@@ -19,8 +19,9 @@
                 <div class="navbar-end">
                     <div class="navbar-item">
                         <div class="field is-grouped">
-                            <a id="theme-switcher" class="mdi mdi-theme-light-dark has-text-current" @click="toggleTheme"></a>
                             <a class="mdi mdi-github has-text-current" href="https://github.com/dcdaz/anicap"></a>
+                            <a id="theme-switcher" class="mdi mdi-theme-light-dark has-text-current" @click="toggleTheme"></a>
+                            <router-link :to="`/serie-settings`" class="mdi mdi-cog has-text-current" />
                             <a class="mdi mdi-logout has-text-current" @click="logout"></a>
                         </div>
                     </div>

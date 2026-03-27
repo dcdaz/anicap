@@ -8,7 +8,6 @@ pub fn add_new_serie(
     mut authenticated_request: AuthenticatedRequest,
     request: SerieRequest,
 ) -> Result<usize, ServerError> {
-    request.validate_request();
     serie_repository::add_new_serie(
         &mut authenticated_request.connection,
         NewSerie::from_request(authenticated_request.user_id, request),
@@ -44,7 +43,6 @@ pub fn update_serie(
     serie_id: i16,
     request: SerieRequest,
 ) -> Result<usize, ServerError> {
-    request.validate_request();
     serie_repository::update_serie(
         &mut authenticated_request.connection,
         serie_id,
