@@ -113,7 +113,7 @@ pub async fn insert_serie_type(
         (status = 401, body = ErrorMessage),
     )
 )]
-#[get("/serie/settings/genre")]
+#[get("/serie/settings/type")]
 pub async fn search_serie_types(
     authenticated_request: AuthenticatedRequest,
 ) -> ServerResponse {

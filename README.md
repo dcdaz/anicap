@@ -235,7 +235,7 @@ Body
 - [ ] Add unit tests and integration tests to backend
 - [ ] Add unit tests and integration tests (if needed) to frontend
 - [ ] Add appuser settings dashboard
-- [ ] Add settings dashboard for series types and genres?
+- [x] Add settings dashboard for series types and genres?
 - [ ] Add Serie type eg. Anime, Serie, Dorama, etc
 - [ ] Add Serie genre eg. Comedy, Action, Fantasy, etc
 - [ ] Add secondary title eg. 1st Tensei shitara Slime Datta Ken, 2nd That Time I Got Reincarnated as a Slime
@@ -244,3 +244,4 @@ Body
 - [ ] Add ability to show/hide columns on dashboard
 - [ ] Add a way to migrate multiple statements at once if applicable
 - [ ] Add a way to run schema and migrations for other databases
+- [ ] Allow to edit serie name
