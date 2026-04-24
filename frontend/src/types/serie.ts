@@ -6,6 +6,8 @@ type Serie = {
     score: number,
     favorite: boolean,
     wishToSee: boolean,
+    serieTypeIds: number[],
+    serieGenreIds: number[],
     watchStatus: number,
 }
 

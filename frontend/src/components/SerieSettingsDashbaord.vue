@@ -20,12 +20,13 @@
                                 </tr>
                             </thead>
                             <tbody class="has-text-centered">
-                                <tr v-for="type in types" :key="type.id">
+                                <tr v-for="type in types" :key="type.id" v-if="types.length">
                                     <td>
                                         {{ type.name }}&emsp;&emsp;
                                         <a class="mdi mdi-delete-forever has-text-current" @click="deleteSrieGenreOrType(type.id, 'type')"></a>
                                     </td>
                                 </tr>
+                                <p v-else class="has-text-centered">No data</p>
                             </tbody>
                         </table>
                         <table class="table is-fullwidth is-striped" v-show="showGenre">
@@ -37,12 +38,13 @@
                                 </tr>
                             </thead>
                             <tbody class="has-text-centered">
-                                <tr v-for="genre in genres" :key="genre.id">
+                                <tr v-for="genre in genres" :key="genre.id" v-if="genres.length">
                                     <td>
                                         {{ genre.name }}&emsp;&emsp;
                                         <a class="mdi mdi-delete-forever has-text-current" @click="deleteSrieGenreOrType(genre.id, 'genre')"></a>
                                     </td>
                                 </tr>
+                                <p v-else class="has-text-centered">No data</p>
                             </tbody>
                         </table>
                         <span class="column is-one-fifth-fullhd"></span>
@@ -96,11 +98,11 @@
         }
     }
 
-    function getGenres() {
+    async function getGenres() {
         serieSettingsService.getSerieGenres().then(response => genres.value = response)
     }
 
-    function addSerieGenre() {
+    async function addSerieGenre() {
         const serieGenre = newSerieGenre.value
         if (serieGenre.length > 2) {
             var request: SerieGenreRequest = {
@@ -111,11 +113,11 @@
         }
     }
 
-    function getTypes() {
+    async function getTypes() {
         serieSettingsService.getSerieTypes().then(response => types.value = response)
     }
 
-    function addSerieType() {
+    async function addSerieType() {
         const serieType = newSerieType.value
         if (serieType.length > 2) {
             var request: SerieTypeRequest = {
@@ -126,7 +128,7 @@
         }
     }
 
-    function deleteSrieGenreOrType(id: number, type: string) {
+    async function deleteSrieGenreOrType(id: number, type: string) {
         if (type === 'genre') {
             serieSettingsService.deleteSerieGenre(id).then(() => getGenres())
         } else {

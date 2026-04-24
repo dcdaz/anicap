@@ -29,7 +29,11 @@ class Api {
                             this.router.push({ name: 'bad-gateway' })
                             break
                     }
-                    return response
+                    const headers = new Headers(_request.headers);
+                    if (headers.get('returnToPreviousPage') == 'true') {
+                        this.router.go(-1)
+                    }
+                    return
                 },
             ],
         },

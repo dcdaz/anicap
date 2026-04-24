@@ -151,7 +151,9 @@ Body
   "score": 8.0,
   "score": 5.1,
   "favorite": false,
-  "wishToSee": false
+  "wishToSee": false,
+  "serieTypeIds": [1,2],
+  "serieGenreIds": [1,2]
 }
 ```
 
@@ -176,7 +178,9 @@ Response
     "chapter": 0,
     "score": 8.0,
     "favorite": false,
-    "wishToSee": false
+    "wishToSee": false,
+    "serieTypeIds": [1,2],
+    "serieGenreIds": [1,2]
   }
 ]
 ```
@@ -202,7 +206,9 @@ Response
   "chapter": 0,
   "score": 8.0,
   "favorite": false,
-  "wishToSee": false
+  "wishToSee": false,
+  "serieTypeIds": [1,2],
+  "serieGenreIds": [1,2]
 }
 ```
 
@@ -225,7 +231,9 @@ Body
   "chapter": 2,
   "score": 8.5,
   "favorite": false,
-  "wishToSee": false
+  "wishToSee": false,
+  "serieTypeIds": [1,2],
+  "serieGenreIds": [1,2]
 }
 ```
 
@@ -236,8 +244,8 @@ Body
 - [ ] Add unit tests and integration tests (if needed) to frontend
 - [ ] Add appuser settings dashboard
 - [x] Add settings dashboard for series types and genres?
-- [ ] Add Serie type eg. Anime, Serie, Dorama, etc
-- [ ] Add Serie genre eg. Comedy, Action, Fantasy, etc
+- [x] Add Serie type eg. Anime, Serie, Dorama, etc
+- [x] Add Serie genre eg. Comedy, Action, Fantasy, etc
 - [ ] Add secondary title eg. 1st Tensei shitara Slime Datta Ken, 2nd That Time I Got Reincarnated as a Slime
 - [x] Add status (To watch, watching, watched), maybe colors on general dashboard.
 - [ ] Add pie report to show series by genre and/or type

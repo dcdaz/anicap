@@ -6,15 +6,12 @@ import { useRoute } from 'vue-router'
 class SerieService {
 
     private route = useRoute()
-    private webApi = new Api().webApi
+    private webApi = new Api().webApi.extend({
+        credentials: 'include'
+    })
 
     async get(): Promise<Serie> {
-        return await this.webApi.get(
-            `serie/${this.route.params.serieId}`,
-            {
-                credentials: 'include'
-            }
-        ).json<Serie>()
+        return await this.webApi.get(`serie/${this.route.params.serieId}`).json<Serie>()
     }
 
     async addSerie(request: SerieRequest) {
@@ -22,7 +19,9 @@ class SerieService {
             'serie',
             {
                 json: request,
-                credentials: 'include'
+                headers: {
+                    returnToPreviousPage: 'true'
+                }
             }
         )
     }
@@ -32,8 +31,7 @@ class SerieService {
         await this.webApi.put(
             `serie/${validSerieId}`,
             {
-                json: request,
-                credentials: 'include'
+                json: request
             }
         )
     }
@@ -42,7 +40,9 @@ class SerieService {
         await this.webApi.delete(
             `serie/${this.route.params.serieId}`,
             {
-                credentials: 'include'
+                headers: {
+                    returnToPreviousPage: 'true'
+                }
             }
         )
     }

@@ -4,22 +4,18 @@ import Api from '@/utils/api'
 
 class DashboardService {
 
-    private webApi = new Api().webApi
+    private webApi = new Api().webApi.extend({
+        credentials: 'include'
+    })
 
     async searchAllSeries(): Promise<Serie[]> {
-        return await this.webApi.get(
-            'serie',
-            {
-                credentials: 'include'
-            }
-        ).json<Serie[]>()
+        return await this.webApi.get('serie').json<Serie[]>()
     }
 
     async searchSeries(queryParams: Partial<SerieRequest>): Promise<Serie[]> {
         return await this.webApi.get(
             'serie',
             {
-                credentials: 'include',
                 searchParams: queryParams,
             }
         ).json<Serie[]>()
