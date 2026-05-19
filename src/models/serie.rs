@@ -4,7 +4,7 @@ use crate::schema::serie;
 #[derive(Queryable, Selectable)]
 #[diesel(table_name = serie)]
 pub struct Serie {
-    pub id: i16,
+    pub id: i32,
     pub name: String,
     pub season: i16,
     pub chapter: i16,
@@ -17,7 +17,7 @@ pub struct Serie {
 #[derive(Insertable, AsChangeset)]
 #[diesel(table_name = serie)]
 pub struct NewSerie {
-    pub user_id: i16,
+    pub user_id: i32,
     pub name: String,
     pub season: i16,
     pub chapter: i16,
@@ -28,7 +28,7 @@ pub struct NewSerie {
 }
 
 impl NewSerie {
-    pub fn from_request(logged_user_id: i16, request: SerieRequest) -> Self {
+    pub fn from_request(logged_user_id: i32, request: SerieRequest) -> Self {
         NewSerie {
             user_id: logged_user_id,
             name: request.name,

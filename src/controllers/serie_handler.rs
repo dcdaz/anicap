@@ -60,7 +60,7 @@ pub async fn search_series(
     path = "/serie/{serie_id}",
     tag = "Series",
     description = "Get a serie by its id",
-    params(("serie_id" = i16, Path, description = "Id of a serie")),
+    params(("serie_id" = i32, Path, description = "Id of a serie")),
     security(("token" = [])),
     responses(
         (status = 200, body = SerieResponse),
@@ -71,7 +71,7 @@ pub async fn search_series(
 #[get("/serie/{serie_id}")]
 pub async fn get_serie_by_id(
     authenticated_request: AuthenticatedRequest,
-    serie_id: web::Path<i16>,
+    serie_id: web::Path<i32>,
 ) -> ServerResponse {
     serie_service::get_serie_by_id(authenticated_request, serie_id.into_inner())
         .map(|serie| HttpResponse::Ok().json(serie))
@@ -82,7 +82,7 @@ pub async fn get_serie_by_id(
     path = "/serie/{serie_id}",
     tag = "Series",
     description= "Update a serie",
-    params(("serie_id" = i16, Path, description = "Id of a serie")),
+    params(("serie_id" = i32, Path, description = "Id of a serie")),
     request_body(
         content = SerieRequest,
         example = json!({"name": "Sample Serie", "season": 2, "chapter": 0, "score": 0})
@@ -98,7 +98,7 @@ pub async fn get_serie_by_id(
 #[put("/serie/{serie_id}")]
 pub async fn update_serie(
     authenticated_request: AuthenticatedRequest,
-    serie_id: web::Path<(i16,)>,
+    serie_id: web::Path<(i32,)>,
     request: web::Json<SerieRequest>,
 ) -> ServerResponse {
     serie_service::update_serie(
@@ -114,7 +114,7 @@ pub async fn update_serie(
     path = "/serie/{serie_id}",
     tag = "Series",
     description= "Delete a serie",
-    params(("serie_id" = i16, Path, description = "Id of a serie")),
+    params(("serie_id" = i32, Path, description = "Id of a serie")),
     security(("token" = [])),
     responses(
         (status = 204),
@@ -124,7 +124,7 @@ pub async fn update_serie(
 #[delete("/serie/{serie_id}")]
 pub async fn delete_serie(
     authenticated_request: AuthenticatedRequest,
-    serie_id: web::Path<(i16,)>,
+    serie_id: web::Path<(i32,)>,
 ) -> ServerResponse {
     serie_service::delete_serie(
         authenticated_request,

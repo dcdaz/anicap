@@ -7,7 +7,7 @@ use crate::models::Claims;
 use crate::utils::{pool_handler, SqlPool, SqlPooledConnection};
 
 pub struct AuthenticatedRequest {
-    pub user_id: i16,
+    pub user_id: i32,
     pub connection: SqlPooledConnection,
 }
 
