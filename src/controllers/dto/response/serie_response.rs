@@ -5,7 +5,7 @@ use utoipa::ToSchema;
 #[derive(ToSchema, Serialize)]
 #[serde(rename_all="camelCase")]
 pub struct SerieResponse {
-    pub id: i16,
+    pub id: i32,
     pub name: String,
     pub season: i16,
     pub chapter: i16,

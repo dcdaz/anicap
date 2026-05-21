@@ -18,7 +18,7 @@ pub fn add_new_serie_genre(
 
 pub fn search_serie_genres(
     connection: &mut SqlConnection,
-    logged_user_id: i16,
+    logged_user_id: i32,
 ) -> Result<Vec<SerieGenre>, ServerError> {
     serie_genre
         .filter(serie_genre::user_id.eq(logged_user_id))
@@ -48,7 +48,7 @@ pub fn add_new_serie_type(
 
 pub fn search_serie_types(
     connection: &mut SqlConnection,
-    logged_user_id: i16,
+    logged_user_id: i32,
 ) -> Result<Vec<SerieType>, ServerError> {
     serie_type
         .filter(serie_type::user_id.eq(logged_user_id))

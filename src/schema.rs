@@ -4,7 +4,7 @@
 
 table! {
     app_user (id) {
-        id -> SmallInt,
+        id -> Integer,
         first_name -> Varchar,
         last_name -> Varchar,
         username -> Varchar,
@@ -16,8 +16,8 @@ table! {
 
 table! {
     serie (id) {
-        id -> SmallInt,
-        user_id -> SmallInt,
+        id -> Integer,
+        user_id -> Integer,
         name -> Varchar,
         season -> SmallInt,
         chapter -> SmallInt,
@@ -32,7 +32,7 @@ joinable!(serie -> app_user(user_id));
 
 table! {
     migration(id) {
-        id -> SmallInt,
+        id -> Integer,
         migration_name -> VarChar,
         migrated_at -> Timestamp,
     }
@@ -41,7 +41,7 @@ table! {
 table! {
     serie_genre(id) {
         id -> SmallInt,
-        user_id -> SmallInt,
+        user_id -> Integer,
         name -> VarChar
     }
 }
@@ -49,7 +49,7 @@ table! {
 table! {
     serie_type(id) {
         id -> SmallInt,
-        user_id -> SmallInt,
+        user_id -> Integer,
         name -> VarChar
     }
 }

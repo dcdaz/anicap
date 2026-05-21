@@ -7,8 +7,7 @@ Small project to track chapters and seasons of a TV series or anime, to review f
 
 ### Dev
 
-- sqlite3-devel (openSuSe)
-- libsqlite3-dev (Debian based)
+- default-libmysqlclient-dev (Debian)
 
 
 ## Config file
@@ -253,3 +252,5 @@ Body
 - [ ] Add a way to migrate multiple statements at once if applicable
 - [ ] Add a way to run schema and migrations for other databases
 - [ ] Allow to edit serie name
+- [x] Implement initializator via command to init DB
+- [x] Change to support MariaDB/PostgreSQL rather than SQLite

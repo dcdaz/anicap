@@ -11,12 +11,12 @@ pub struct SerieType {
 #[derive(Insertable, AsChangeset)]
 #[diesel(table_name = serie_type)]
 pub struct NewSerieType {
-    pub user_id: i16,
+    pub user_id: i32,
     pub name: String,
 }
 
 impl NewSerieType {
-    pub fn from_request(logged_user_id: i16, request: SerieTypeRequest) -> Self {
+    pub fn from_request(logged_user_id: i32, request: SerieTypeRequest) -> Self {
         NewSerieType { 
             user_id: logged_user_id,
             name: request.name,

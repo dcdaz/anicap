@@ -18,3 +18,9 @@ anicap.yml
 
 # anicap sqlite db
 anicap.db
+
+# Secrets folder
+/secrets/
+
+# Container Volumes
+/container-volumes/

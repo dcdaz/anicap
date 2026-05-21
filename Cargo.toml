@@ -9,24 +9,24 @@ license = "GPLv3"
 
 [dependencies]
 # Temp dep becuase actix web is complaining about h1_allow_half_closed
-actix-http = "3.12.0"
+actix-http = "3.12.1"
 actix-web = "4.13.0"
 actix-cors = "0.7.1"
-jsonwebtoken = { version = "10.3.0", features = ["aws_lc_rs"] }
+jsonwebtoken = { version = "10.4.0", features = ["aws_lc_rs"] }
 futures = "0.3.32"
-config = "0.15.19"
-env_logger = "0.11.9"
+config = "0.15.2"
+env_logger = "0.11.10"
 lazy_static = "1.5.0"
 serde = "1.0.228"
 serde_json = "1.0.149"
 detrim = "0.1.6"
-data-encoding = "2.10.0"
+data-encoding = "2.11.0"
 thiserror = "2.0.18"
 validator = { version = "0.20.0", features = ["derive"] }
-utoipa = "5.4.0"
+utoipa = "5.5.0"
 utoipa-swagger-ui = { version = "9.0.2", features = ["actix-web"] }
 chrono = { version = "0.4.44", features = ["serde"] }
-diesel = { version = "2.3.6", features = ["sqlite", "r2d2", "chrono"] }
+diesel = { version = "2.3.9", features = ["mysql", "r2d2", "chrono"] }
 
 [profile.release]
 opt-level = 3

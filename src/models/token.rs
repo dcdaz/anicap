@@ -9,7 +9,7 @@ use crate::{controllers::AppUserTokenResponse, utils::ServerError};
 
 #[derive(Serialize, Deserialize)]
 pub struct Claims {
-    pub id: i16,
+    pub id: i32,
     username: String,
     exp: i64,
 }

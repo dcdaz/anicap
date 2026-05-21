@@ -28,7 +28,7 @@ pub fn search_series(
 
 pub fn get_serie_by_id(
     mut authenticated_request: AuthenticatedRequest,
-    serie_id: i16,
+    serie_id: i32,
 ) -> Result<SerieResponse, ServerError> {
     serie_repository::get_serie_by_id(
         &mut authenticated_request.connection,
@@ -40,7 +40,7 @@ pub fn get_serie_by_id(
 
 pub fn update_serie(
     mut authenticated_request: AuthenticatedRequest,
-    serie_id: i16,
+    serie_id: i32,
     request: SerieRequest,
 ) -> Result<usize, ServerError> {
     serie_repository::update_serie(
@@ -52,7 +52,7 @@ pub fn update_serie(
 
 pub fn delete_serie(
     mut authenticated_request: AuthenticatedRequest,
-    serie_id: i16,
+    serie_id: i32,
 ) -> Result<usize, ServerError> {
     serie_repository::delete_serie(&mut authenticated_request.connection, serie_id)
 }

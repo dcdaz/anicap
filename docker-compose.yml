@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  db:
+    hostname: anicap-db
+    image: mariadb:lts-ubi
+    container_name: anicap-db
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MARIADB_DATABASE: anicapdb
+      MARIADB_USER: anicap
+      MARIADB_PASSWORD_FILE: /run/secrets/db_password
+    secrets:
+      - db_root_password
+      - db_password
+    volumes:
+      - ./container-volumes/mariadb:/var/lib/mysql
+    command:
+      - --max-connections=200
+      - --innodb-buffer-pool-size=512M
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 1G
+  
+secrets:
+  db_root_password:
+    file: ./secrets/db_root_pass
+  db_password:
+    file: ./secrets/db_pass
