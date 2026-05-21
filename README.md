@@ -7,8 +7,7 @@ Small project to track chapters and seasons of a TV series or anime, to review f
 
 ### Dev
 
-- sqlite3-devel (openSuSe)
-- libsqlite3-dev (Debian based)
+- default-libmysqlclient-dev (Debian)
 
 
 ## Config file
@@ -237,3 +236,5 @@ Body
 - [x] Add status (To watch, watching, watched), maybe colors on general dashboard.
 - [ ] Add pie report to show series by genre and/or type
 - [ ] Add ability to show/hide columns on dashboard
+- [x] Implement initializator via command to init DB
+- [x] Change to support MariaDB/PostgreSQL rather than SQLite

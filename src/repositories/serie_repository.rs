@@ -21,7 +21,7 @@ pub fn add_new_serie(
 }
 
 fn build_filter(
-    logged_user_id: i16,
+    logged_user_id: i32,
     query_param: QueryParam,
 ) -> BoxablePredicate {
     let mut filter: BoxablePredicate = Box::new(user_id.eq(logged_user_id));
@@ -59,7 +59,7 @@ fn build_filter(
 
 pub fn search_series(
     connection: &mut SqlConnection,
-    logged_user_id: i16,
+    logged_user_id: i32,
     query_param: QueryParam,
 ) -> Result<Vec<Serie>, ServerError> {
     serie
@@ -71,8 +71,8 @@ pub fn search_series(
 
 pub fn get_serie_by_id(
     connection: &mut SqlConnection,
-    logged_user_id: i16,
-    serie_id: i16,
+    logged_user_id: i32,
+    serie_id: i32,
 ) -> Result<Serie, ServerError> {
     serie
         .filter(user_id.eq(logged_user_id).and(id.eq(serie_id)))
@@ -83,7 +83,7 @@ pub fn get_serie_by_id(
 
 pub fn update_serie(
     connection: &mut SqlConnection,
-    serie_id: i16,
+    serie_id: i32,
     updated_serie: NewSerie,
 ) -> Result<usize, ServerError> {
     update(serie.filter(id.eq(serie_id)))
@@ -94,7 +94,7 @@ pub fn update_serie(
 
 pub fn delete_serie(
     connection: &mut SqlConnection,
-    serie_id: i16,
+    serie_id: i32,
 ) -> Result<usize, ServerError> {
     delete(serie.filter(id.eq(serie_id)))
         .execute(connection)

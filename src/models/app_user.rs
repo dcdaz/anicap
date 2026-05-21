@@ -5,7 +5,7 @@ use chrono::NaiveDateTime;
 
 #[derive(Queryable)]
 pub struct AppUser {
-    pub id: i16,
+    pub id: i32,
     pub first_name: String,
     pub last_name: String,
     pub username: String,

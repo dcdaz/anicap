@@ -1,3 +1,3 @@
 mod migrator;
 
-pub use self::migrator::migrate;
+pub use self::migrator::{initialize_database, migrate};
